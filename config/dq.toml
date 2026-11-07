@@ -1,0 +1,31 @@
+# Data-quality thresholds. Defaults are conservative and can be tuned; every issue records
+# the observation that triggered it, so a threshold change is auditable.
+
+[missing_days]
+# A gap of >= error_gap_days consecutive missing market days is ERROR, shorter is WARNING.
+error_gap_days = 5
+
+[abnormal_move]
+# Absolute day-over-day NAV change between consecutive market days (Growth NAVs should not
+# jump: no dividends are paid out of them). Corporate actions / data errors show up here.
+warning_pct = 0.15
+error_pct = 0.30
+
+[stale]
+# Identical NAV on this many consecutive market days.
+warning_days = 5
+error_days = 10
+
+[freshness]
+# Days between the latest NAV date in the database and today.
+warning_days = 7
+error_days = 45
+
+[reject_rate]
+# If more than this fraction of in-scope lines in one file is REJECTED, raise CRITICAL
+# (likely an AMFI format change).
+critical_fraction = 0.05
+
+[coverage]
+# Weekdays with 0 < coverage < market-day threshold are flagged (possible partial load).
+min_market_day_coverage = 0.5

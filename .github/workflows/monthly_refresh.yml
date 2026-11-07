@@ -1,0 +1,74 @@
+name: Monthly refresh
+
+# Retrieves the latest AMFI NAV data, validates and loads it into a HOSTED PostgreSQL, runs the
+# data-quality checks, refreshes analytical outputs and produces a refresh report.
+# The job FAILS VISIBLY (red run + auto-opened issue) if ingestion errors or any CRITICAL
+# data-quality issue is unresolved. See docs/ARCHITECTURE.md "Database hosting for scheduled runs".
+#
+# Required repository secret (Settings > Secrets and variables > Actions):
+#   DATABASE_URL  e.g. postgresql+psycopg://USER:PASSWORD@HOST:5432/DBNAME?sslmode=require
+# Nothing secret is stored in this repository.
+
+on:
+  schedule:
+    - cron: "0 6 5 * *"   # 06:00 UTC on the 5th of every month (previous month's NAVs are final)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: monthly-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+      - name: Check secret is configured
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "::error::DATABASE_URL secret is not configured (see docs/ARCHITECTURE.md)"; exit 1
+          fi
+      - name: Install
+        run: pip install -e .
+      - name: Migrate database
+        run: python -m fundlens.cli migrate
+      - name: Retrieve, validate and load latest NAV data
+        run: python -m fundlens.cli ingest
+      - name: Analytics pipeline (DQ gate, marts, screening, backtest, report)
+        run: python -m fundlens.cli pipeline
+      - name: Publish refresh report
+        if: always()
+        run: |
+          if [ -f results/refresh_report.md ]; then cat results/refresh_report.md >> "$GITHUB_STEP_SUMMARY"; fi
+      # Only aggregate outputs are uploaded. Raw AMFI files are deliberately NOT uploaded:
+      # artifacts of a public repository are publicly downloadable and AMFI's terms of use
+      # restrict redistribution (docs/DATA_CARD.md, docs/DECISIONS.md D-003).
+      - name: Upload report (aggregates only)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: refresh-${{ github.run_id }}
+          path: |
+            results/
+            RESULTS.md
+          retention-days: 90
+          if-no-files-found: ignore
+      - name: Open an issue when the refresh fails
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --repo "$GITHUB_REPOSITORY" \
+            --title "Monthly refresh failed ($(date -u +%Y-%m-%d))" \
+            --body "The monthly refresh failed. See run: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"

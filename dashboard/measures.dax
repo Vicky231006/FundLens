@@ -1,0 +1,35 @@
+// FundLens Power BI measures. Paste into the model (Modeling -> New measure).
+// Table names assume the views are imported as dash_flag, dash_fund_month, dash_dq_issue,
+// dash_dq_by_category, dash_backtest_summary, dash_backtest_dataset, dash_refresh_info.
+
+Last Refresh = MAX ( dash_refresh_info[last_successful_refresh] )
+Latest NAV Date = MAX ( dash_refresh_info[latest_nav_date] )
+Disclosure = MAX ( dash_refresh_info[disclosure] )
+
+Flagged Funds = DISTINCTCOUNT ( dash_flag[scheme_id] )
+Avg 3Y CAGR (Flagged) = AVERAGE ( dash_flag[cagr_3y] )
+Avg Streak (Months) = AVERAGE ( dash_flag[streak_months] )
+
+Funds Screened = DISTINCTCOUNT ( dash_fund_month[scheme_id] )
+Flag Rate = DIVIDE ( [Flagged Funds], [Funds Screened] )
+Months Flagged = CALCULATE ( COUNTROWS ( dash_fund_month ), dash_fund_month[is_flagged] = TRUE () )
+
+Open DQ Issues =
+    CALCULATE (
+        COUNTROWS ( dash_dq_issue ),
+        dash_dq_issue[resolution_status] IN { "OPEN", "ACKNOWLEDGED" }
+    )
+Open CRITICAL =
+    CALCULATE ( [Open DQ Issues], dash_dq_issue[severity] = "CRITICAL" )
+Open ERROR =
+    CALCULATE ( [Open DQ Issues], dash_dq_issue[severity] = "ERROR" )
+Affected Schemes = DISTINCTCOUNT ( dash_dq_issue[scheme_id] )
+
+// Backtest (values come straight from the stored backtest JSON via dash_backtest_summary)
+Mean y = AVERAGE ( dash_backtest_summary[mean_y] )
+CI Lower = MIN ( dash_backtest_summary[ci_lower_fund_cluster] )
+CI Upper = MAX ( dash_backtest_summary[ci_upper_fund_cluster] )
+Error Bar Minus = [Mean y] - [CI Lower]
+Error Bar Plus = [CI Upper] - [Mean y]
+Flagged Observations = SUM ( dash_backtest_summary[n_obs] )
+Test Start = MAX ( dash_backtest_dataset[test_start] )

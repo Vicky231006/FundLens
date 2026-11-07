@@ -1,0 +1,51 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "fundlens"
+version = "0.1.0"
+description = "Explainable mutual fund review-flag analytics engine (analyst-support tool, not investment advice)."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pandas>=2.3",
+    "numpy>=2.1",
+    "SQLAlchemy>=2.0.36",
+    "psycopg[binary]>=3.2",
+    "requests>=2.32",
+    "python-dotenv>=1.0",
+    "scipy>=1.14",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3",
+    "pytest-cov>=6.0",
+    "hypothesis>=6.120",
+    "ruff>=0.8",
+]
+
+[project.scripts]
+fundlens = "fundlens.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/fundlens"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+markers = [
+    "integration: requires a running PostgreSQL (docker compose up -d db)",
+    "network: requires internet access to AMFI",
+]
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "N"]
+ignore = ["E501"]  # long SQL / markdown string literals; layout handled by ruff format
+

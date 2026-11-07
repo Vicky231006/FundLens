@@ -1,0 +1,215 @@
+Issue Type,Issue Key,Summary,Description,Epic Name/Epic Link,Priority,Story Points,Sprint,Acceptance Criteria,Labels,Status
+Epic,,Infrastructure and architecture,"Repository, environment, containerised PostgreSQL, CLI and architecture documentation.",Infrastructure and architecture,Medium,,,,epic,To Do
+Epic,,Data ingestion,"Retrieve genuine AMFI NAV data, preserve raw files, parse, validate and load idempotently.",Data ingestion,Medium,,,,epic,To Do
+Epic,,Database engineering,"PostgreSQL layers, constraints, scheme dimension and mapping, indexing, ad-hoc SQL.",Database engineering,Medium,,,,epic,To Do
+Epic,,Data quality,"DQ checks, dq_issue persistence, severity, critical-failure blocking and resolution workflow.",Data quality,Medium,,,,epic,To Do
+Epic,,Financial metrics,"Rolling CAGR, volatility, drawdown, SIP XIRR and category percentile rank with tests.",Financial metrics,Medium,,,,epic,To Do
+Epic,,Review-flag engine,"Configurable, explainable, as-of review-flag rule.",Review-flag engine,Medium,,,,epic,To Do
+Epic,,Backtesting,"Walk-forward evaluation, baselines, block-bootstrap CIs, limitations and RESULTS.md.",Backtesting,Medium,,,,epic,To Do
+Epic,,Dashboard,"Analyst dashboard: review screen, drilldown, data-quality page, backtesting page.",Dashboard,Medium,,,,epic,To Do
+Epic,,Automation and deployment,"CI, monthly GitHub Actions refresh, refresh report, hosting and publication.",Automation and deployment,Medium,,,,epic,To Do
+Epic,,Documentation and testing,"BRD, user stories, data card, results documentation, test harness and honesty review.",Documentation and testing,Medium,,,,epic,To Do
+Story,,"Set up Python 3.14 environment, pyproject, ruff and pytest","Ref: INF-01. Create the project virtual environment (Python 3.14) and pyproject.toml with dependencies, ruff lint configuration and pytest configuration. Linked: NFR-1, NFR-7.",Infrastructure and architecture,High,3,Sprint 1,"- Virtual environment exists and project installs in editable mode
+- pyproject.toml declares runtime and dev dependencies plus ruff and pytest settings
+- ruff check and pytest both run from the project root",setup python tooling,Done
+Story,,Run PostgreSQL 16 with Docker Compose and connect from Python,Ref: INF-02. Provide docker-compose.yml for PostgreSQL 16 with a named volume and confirm the Python code can connect using environment-based settings. Linked: NFR-5.,Infrastructure and architecture,High,3,Sprint 1,"- docker compose up starts PostgreSQL 16
+- A Python connection test succeeds using settings from environment variables
+- No credentials are hard-coded in committed files",setup docker postgres,Done
+Story,,Verify AMFI historical NAV endpoint and record limits,"Ref: ING-01. Investigate the official AMFI historical NAV download, confirm available metadata and retrieval limits. Findings recorded in config/scope.toml: history begins 2006-04-01; a request of 105 days works, 366 days is rejected; chunk size set to 90 days. Verified 2026-11-07. Terms of use review is a separate story. Linked: FR-A1.",Data ingestion,Highest,3,Sprint 1,"- Endpoint URL and parameters documented with retrieval date
+- Earliest available date and maximum request span determined by test requests
+- Scope (categories, plan, option) captured in config/scope.toml",amfi research,Done
+Story,,"Draft Phase 0 documents: BRD, user stories and backlog export","Ref: DOC-01. Draft docs/BRD.md, docs/USER_STORIES.md and the JIRA backlog export (this file set). Drafts only; they will be revised as implementation proceeds. DATA_CARD, ARCHITECTURE and DECISIONS are separate stories. Linked: All FR.",Documentation and testing,Medium,3,Sprint 1,"- BRD contains all sections required by the master prompt and an RTM
+- User stories cover Research Analyst, Desk Lead and Data Operations with acceptance criteria
+- Backlog export lists ten epics and sprinted stories and states that no JIRA tickets exist",docs phase0,Done
+Story,,"Create raw, staging and core layer migrations (001-003)","Ref: DB-01. SQL migrations 001_raw_layer, 002_staging_layer and 003_core_layer creating the raw, staging, core and marts schemas and tables (raw ingestion_run, source_file, nav_line; staging nav_parsed; core dim_scheme, scheme_name_history, scheme_mapping, dim_date, fact_nav, nav_revision_conflict, dq_issue). Applied to local PostgreSQL 16. Linked: FR-A1, FR-A2, FR-A3.",Database engineering,Highest,5,Sprint 2,"- Migrations 001-003 apply cleanly to an empty database
+- Primary keys, foreign keys and uniqueness constraints are defined
+- Tables for dq_issue and scheme_mapping exist (structure only; logic is in later stories)",sql migrations schema,Done
+Story,,Seed dim_date calendar (migration 004),"Ref: DB-02. Migration 004_seed_dim_date populates the date dimension used for business-day and month-end logic. Applied locally. Linked: FR-A3, FR-A4.",Database engineering,High,2,Sprint 2,"- dim_date is populated for the history range
+- Weekend flag and month-end flag columns are populated
+- Migration is idempotent or guarded against re-application",sql migrations,Done
+Story,,Implement AMFI NAV parser with unit tests,"Ref: ING-02. Parse the AMFI semicolon-separated NAV text into typed records, track section headers (fund type and category), and apply the scope filters from config/scope.toml. Unit tests in tests/unit/test_parser.py. Linked: FR-A1.",Data ingestion,Highest,5,Sprint 2,"- Parser converts sample AMFI text into typed records with scheme code, name, NAV and date
+- Category sections are mapped using config/scope.toml; out-of-scope sections are excluded from the database
+- Malformed lines are reported, not silently dropped
+- Unit tests pass",python ingestion testing,Done
+Story,,Implement date-chunked AMFI downloader preserving raw files,"Ref: ING-03. Download history in chunks of at most 90 days, save each original response to the raw data directory, and handle the HTML error page AMFI returns for unsupported ranges. Unit tests in tests/unit/test_download.py. Linked: FR-A1.",Data ingestion,High,3,Sprint 2,"- Requested ranges are split into chunks no longer than the configured chunk_days
+- Each response is stored unmodified as a raw file
+- An HTML error response is detected and reported as a failure, not parsed as NAV data
+- Unit tests pass",python ingestion testing,Done
+Story,,Implement idempotent loader from raw files to staging and core,"Ref: ING-04. Load parsed records into raw.nav_line, staging and core.fact_nav using insert-if-absent semantics, recording ingestion run metadata and a file hash. Code is written; database-level proof of idempotency is a separate To Do story (integration test). Linked: FR-A1.",Data ingestion,Highest,5,Sprint 2,"- Loader records an ingestion_run and source_file row per file with a content hash
+- Loading is written with conflict-safe inserts keyed on scheme and date
+- Loader code exists and lints cleanly",python ingestion postgres,Done
+Story,,Add Makefile and .env.example,"Ref: INF-03. Add Makefile targets (lint, test, migrate, ingest, reproduce placeholder) and a committed .env.example containing placeholders only. Linked: NFR-1, NFR-5.",Infrastructure and architecture,Medium,2,Sprint 2,"- make lint and make test run ruff and pytest
+- .env.example lists every required variable with placeholder values only
+- .env is git-ignored
+- make reproduce exists and clearly states what it does not yet cover",setup tooling,To Do
+Story,,Create test database fixture and pytest markers,"Ref: DOC-02. Provide a pytest fixture that creates an isolated test database or schema, applies migrations and tears down without touching development data. Add markers for unit, integration and property tests. Linked: NFR-7.",Documentation and testing,High,3,Sprint 3,"- Integration tests run against an isolated database, not the development data
+- Fixture applies migrations 001-004 and cleans up after the session
+- Markers allow running unit, integration and property tests separately",testing postgres,To Do
+Story,,Add integration test proving idempotent re-ingestion,"Ref: ING-05. Load a fixed sample file twice into the test database and prove the second load changes nothing. Also test the changed-NAV (revision) case. Linked: FR-A1, US-DO-06.",Data ingestion,Highest,3,Sprint 3,"- Given a loaded sample, when it is loaded again, then fact_nav row count is unchanged
+- Every fact_nav row traces to a source_file and ingestion_run
+- Original sample file is byte-identical after both loads",testing ingestion,To Do
+Story,,Run full historical backfill from 2006-04-01 and record dataset size,"Ref: ING-06. Run the chunked ingestion over the full available history for in-scope schemes. Record row counts, scheme counts, date range and elapsed time in the ingestion log. Do not publish raw files until the licensing review in DATA_CARD is complete. Linked: FR-A1, NFR-4.",Data ingestion,High,5,Sprint 3,"- Backfill completes with every chunk logged in raw.ingestion_run
+- Row counts per layer and elapsed time are recorded with the dataset size
+- Failed or empty chunks are listed and not silently skipped
+- Raw files are stored locally and excluded from version control",ingestion data,To Do
+Story,,"Add ingestion CLI summary, retries and loud failure on unexpected format","Ref: ING-07. Expose an ingest command that prints a run summary (files, rows loaded, rows rejected, duration). Add bounded retries with delay for network errors and fail loudly if the source format is unrecognised. Linked: FR-A1, FR-A8.",Data ingestion,Medium,3,Sprint 3,"- CLI prints files, loaded, rejected and duration for each run
+- Network errors are retried a bounded number of times then reported as failure
+- An unrecognised response format exits non-zero with a clear message",python ingestion cli,To Do
+Story,,Enforce raw layer immutability and add schema integrity tests,"Ref: DB-03. Restrict the application role so normal ingestion can INSERT but not UPDATE or DELETE on raw tables, and add tests that check constraints, foreign keys and uniqueness behave as designed. Linked: FR-A1, NFR-3.",Database engineering,High,5,Sprint 3,"- Given the ingestion role, when it attempts UPDATE or DELETE on a raw table, then the database rejects it
+- Tests confirm duplicate scheme-date inserts into fact_nav are prevented
+- Tests confirm foreign key violations are rejected",sql security testing,To Do
+Story,,"Write DATA_CARD.md (source, retrieval, dictionary, licensing, gaps)","Ref: DOC-03. Create docs/DATA_CARD.md covering AMFI as source, retrieval method and date, data dictionary, licensing and terms-of-use findings, known gaps and limitations (including survivorship). Read and cite AMFI terms before any publication of data. Linked: NFR-6.",Documentation and testing,High,3,Sprint 3,"- Source URL, retrieval method and retrieval date are stated
+- Every ingested field appears in a data dictionary
+- AMFI terms-of-use conclusion is recorded and states what may and may not be redistributed
+- Known gaps list includes pre-2006 history, excluded legacy categories and missing closed or merged schemes",docs data licensing,To Do
+Story,,Add CI workflow running ruff and unit tests,Ref: AUT-01. GitHub Actions workflow that runs ruff and the unit tests on push and pull request. Integration tests are added once a service container is configured. Linked: NFR-7.,Automation and deployment,Medium,2,Sprint 3,"- Workflow runs on push and pull request
+- A lint error or failing unit test turns the run red
+- No secrets are required by this workflow",ci github-actions,To Do
+Story,,Populate dim_scheme with scheme identity rules,"Ref: DB-04. Populate core.dim_scheme from staged data using AMFI scheme code as the natural key, with AMC, category, name, Direct/Regular plan and Growth/IDCW option derived explicitly. Never merge schemes on name similarity. Linked: FR-A2.",Database engineering,Highest,5,Sprint 4,"- Each AMFI scheme code maps to exactly one dim_scheme row
+- Plan and option are derived by documented rules with unit tests
+- Given two similarly named schemes with different codes, then they remain separate rows
+- Name changes for the same code are stored in scheme_name_history",sql python schemes,To Do
+Story,,Implement scheme_mapping for renames and mergers,"Ref: DB-05. Add the mechanism to record rename and merger relations as explicit scheme_mapping rows with effective date, evidence note and status (proposed, approved, rejected). Only approved mappings are used to build continuous histories. Linked: FR-A2, US-DO-05.",Database engineering,Highest,5,Sprint 4,"- Mappings are stored only as explicit rows, never inferred automatically from name similarity
+- Status values are constrained to proposed, approved, rejected
+- A query returns a continuous history across an approved mapping and excludes proposed or rejected ones
+- Tests cover rename, merger and rejected-mapping cases",sql schemes testing,To Do
+Story,,Record NAV revision conflicts instead of overwriting,"Ref: ING-08. When a re-ingested NAV differs from the stored NAV for the same scheme and date, write a row to core.nav_revision_conflict, keep the original, and surface a data issue. Linked: FR-A1, US-DO-06.",Data ingestion,High,3,Sprint 4,"- Given a different NAV for an existing scheme-date, then the original fact_nav row is unchanged
+- A nav_revision_conflict row records old value, new value, and source file
+- The conflict is reported in the run summary",ingestion data-quality,To Do
+Story,,Build DQ framework: dq_issue persistence and severity model,"Ref: DQ-01. Create the DQ check runner interface, the severity model (for example critical, error, warning, info; to be documented) and persistence into core.dq_issue with all required fields: issue id, scheme id where applicable, category, detection timestamp, severity, observation, explanation, resolution status. Linked: FR-A3.",Data quality,Highest,5,Sprint 4,"- Each persisted issue has issue id, category, detection timestamp, severity, observation, explanation, status and scheme id when applicable
+- Re-running a check does not create a duplicate open issue for the same problem
+- Severity per check type is documented",python sql data-quality,To Do
+Story,,Write ARCHITECTURE.md with ER diagram and start DECISIONS.md,"Ref: INF-04. Create docs/ARCHITECTURE.md (components, data flow, database design with ER diagram, technology decisions, failure handling) and docs/DECISIONS.md (decision log with alternatives, including plan-scope and chunking decisions already made). Linked: NFR-2, NFR-3.",Infrastructure and architecture,Medium,3,Sprint 4,"- ER diagram matches the migrated schema
+- Data flow from AMFI to dashboard is described
+- Each decision has context, choice and alternatives considered
+- Failure handling per stage is described",docs architecture,To Do
+Story,,Check: missing business-day observations,Ref: DQ-02. Detect scheme-level gaps where a business day (per dim_date) has no NAV between a scheme's first and last observation. Define how market holidays are handled and document it. Linked: FR-A3.,Data quality,High,3,Sprint 5,"- Given a gap in a scheme's NAV series, then a dq_issue is created for the missing date range
+- Holiday handling rule is documented and tested
+- The check does not insert or delete any NAV rows",data-quality python sql,To Do
+Story,,"Checks: non-positive NAV, abnormal day-over-day moves, stale NAV","Ref: DQ-03. Detect NAV <= 0, absolute day-over-day change above a configurable threshold, and NAV unchanged for more than a configurable number of business days. Thresholds are placed in config with rationale recorded. Linked: FR-A3.",Data quality,High,3,Sprint 5,"- Non-positive NAV creates a critical issue
+- A move above the configured threshold creates an issue and the observation is retained
+- A stale run longer than the configured limit creates an issue
+- Thresholds are read from config, not hard-coded",data-quality python,To Do
+Story,,"Checks: duplicates, invalid scheme identifiers, invalid dates, unexpected types","Ref: DQ-04. Implement structural checks: duplicate scheme-date combinations, missing or invalid scheme identifiers, invalid dates, and unexpected data types, including at the staging layer where rejected records are held. Linked: FR-A3.",Data quality,High,3,Sprint 5,"- Each of the four conditions produces an issue of the documented category
+- Rejected staging records remain stored with a reason
+- Duplicate scheme-date detection is severity critical",data-quality python sql,To Do
+Story,,Critical DQ failures stop the analytics pipeline,"Ref: DQ-05. Add a gate after DQ checks: if any open critical issue exists, the pipeline exits non-zero before metrics, flags or backtests refresh. Print the critical issues. Linked: FR-A3, US-DO-03.",Data quality,Highest,3,Sprint 5,"- Given at least one open critical issue, when the pipeline runs, then it exits non-zero before metrics refresh
+- Critical issues are printed in the log
+- Given only non-critical issues, then the pipeline continues
+- Gate is covered by an integration test",data-quality pipeline testing,To Do
+Story,,Issue resolution workflow for dq_issue,"Ref: DQ-06. Allow status transitions (open, investigating, resolved, accepted) with a note and timestamp, via CLI or SQL function. Original observation and explanation stay unchanged. Linked: FR-A3, US-DO-02.",Data quality,High,3,Sprint 5,"- Status changes record the new status, a note and a timestamp
+- Invalid status values are rejected by a constraint
+- Original observation and explanation are not modified by a status change",data-quality sql cli,To Do
+Story,,Scheme mapping review workflow,"Ref: DB-06. List proposed rename and merger mappings with supporting evidence and allow approve or reject with a note, so only human-confirmed mappings take effect. Linked: FR-A2, US-DO-05.",Database engineering,High,3,Sprint 5,"- Proposed mappings can be listed with evidence
+- Approve and reject actions update status and record who and when (as a label, no real identities needed)
+- Rejected mappings never affect histories",sql schemes cli,To Do
+Story,,Document hosting strategy for remote scheduled PostgreSQL,"Ref: AUT-02. Evaluate free-tier hosted PostgreSQL options, document how GitHub Actions will connect (secrets, network access, SSL), the data-loading approach and the fallback of local-only reproduction. Linked: FR-A8, NFR-5.",Automation and deployment,Medium,2,Sprint 5,"- Options, costs and constraints are compared in writing
+- A chosen approach is recorded in DECISIONS.md
+- Secrets handling is described and no secret values are stored in the repository",docs deployment security,To Do
+Story,,"DQ tests with injected faults (synthetic, clearly labelled)","Ref: DQ-07. Build small synthetic fixtures with deliberately injected faults for each check. Fixtures are labelled synthetic; detection results are described as performance on injected faults, never as real-world performance. Linked: FR-A3, US-DO-08.",Data quality,High,3,Sprint 6,"- Each DQ check has at least one fixture containing a known injected fault
+- Fixtures are labelled synthetic in file names and docs
+- Tests assert the expected issue count and category per fixture
+- A test shows DQ runs do not change row counts in fact_nav",testing data-quality synthetic,To Do
+Story,,Document metric conventions and insufficient-history rules,"Ref: MET-01. Write the conventions document: month-end definition (last NAV on or before month-end), calendar vs trading-day year, annualisation factor, minimum observation counts and the explicit null result for insufficient or incomplete history. Linked: FR-A4.",Financial metrics,Highest,3,Sprint 6,"- Conventions are documented and referenced from SQL view comments
+- Rule for insufficient history returns null plus a reason, never a computed value
+- Rule for missing observations inside a window is stated",metrics docs,To Do
+Story,,"Rolling 1-, 3- and 5-year CAGR views","Ref: MET-02. SQL views (or justified materialised views) for rolling CAGR at month-end for 1, 3 and 5 years, using the documented conventions. Record view-vs-materialised-view choice and measured refresh time in DECISIONS.md. Linked: FR-A4.",Financial metrics,Highest,5,Sprint 6,"- CAGR matches hand-computed example for a small NAV series
+- Funds with insufficient history return null with a reason
+- The calculation uses only NAVs on or before the month-end
+- Choice between view and materialised view is documented with measured refresh duration and dataset size",metrics sql,To Do
+Story,,Annualised volatility view,Ref: MET-03. SQL view for annualised volatility of periodic returns using the documented annualisation assumption. Linked: FR-A4.,Financial metrics,High,3,Sprint 6,"- Constant NAV series gives volatility of zero
+- Result matches an independently computed reference on a fixed series
+- Insufficient history returns null with a reason",metrics sql,To Do
+Story,,Maximum drawdown view,Ref: MET-04. SQL view for maximum drawdown over a defined window using running peak NAV. Linked: FR-A4.,Financial metrics,High,3,Sprint 6,"- Maximum drawdown is never positive
+- Result matches a manually constructed NAV sequence with known peak and trough
+- A monotonically rising series gives drawdown of zero",metrics sql,To Do
+Story,,Dashboard scaffold with last-refresh banner and disclosure,"Ref: DSH-01. Create the dashboard app skeleton and shared layout: last successful refresh date, research-review disclosure with data limitations, and connection to a read-only database role. Framework choice recorded in DECISIONS.md. Linked: FR-A7, US-RA-06, US-RA-07.",Dashboard,High,3,Sprint 6,"- Every page shows the last successful refresh date
+- Every page shows the disclosure that flags are research-review indicators, not advice
+- Dashboard connects with a read-only database role",dashboard,To Do
+Story,,Standardised SIP XIRR,"Ref: MET-05. Implement standardised SIP XIRR (fixed monthly instalment schedule defined in documentation) for each scheme over defined horizons, with explicit handling for incomplete history. Linked: FR-A4.",Financial metrics,High,5,Sprint 7,"- XIRR matches an Excel-compatible independent calculation on a fixed example
+- SIP schedule and horizons are documented
+- A zero-return series gives an XIRR of approximately zero within a stated tolerance
+- Insufficient history returns null with a reason",metrics sql python,To Do
+Story,,Category percentile rank at each month-end,"Ref: MET-06. Compute category percentile rank for the chosen metric at each month-end, within category and plan type, using only funds with valid metrics at that date. Linked: FR-A4.",Financial metrics,High,3,Sprint 7,"- Ranks are computed within category and plan type only
+- Funds with null metrics are excluded and the peer count is exposed
+- A hand-computed example of five funds matches",metrics sql,To Do
+Story,,Financial calculation tests: hand-computed and independent references,"Ref: MET-07. Collect hand-computed test cases and independent Python reference implementations for CAGR, volatility, drawdown, XIRR and percentile rank, and compare SQL outputs against them. Linked: FR-A4.",Financial metrics,Highest,5,Sprint 7,"- Each formula has at least one hand-computed example with workings in the test
+- SQL outputs agree with independent Python implementations within a stated tolerance
+- Tests run in CI against the test database",testing metrics,To Do
+Story,,Property-based tests for metric invariants,Ref: MET-08. Use Hypothesis to test invariants: constant NAV gives zero volatility; maximum drawdown is never positive; scaling all NAVs by a positive constant leaves percentage returns unchanged; no-flow performance agrees with price return. Linked: FR-A4.,Financial metrics,High,3,Sprint 7,"- All four invariants are covered by property tests
+- Hypothesis settings and seeds are recorded for reproducibility
+- Property tests run under the property marker",testing property metrics,To Do
+Story,,Data-quality page,"Ref: DSH-02. Dashboard page showing issue counts by category, severity and resolution status, affected schemes, the last successful ingestion and latest NAV date. Linked: FR-A7, US-DO-01.",Dashboard,High,3,Sprint 7,"- Counts by category, severity and status equal COUNT(*) queries on dq_issue
+- Selecting a category lists the affected schemes
+- Last successful ingestion and latest NAV date are displayed",dashboard data-quality,To Do
+Story,,Define flag configuration with validation,"Ref: FLG-01. Configuration file for k, return-quartile cut-off, drawdown comparison and plan/category scope, with validation and recorded values per flag run. Linked: FR-A5, US-DL-01.",Review-flag engine,High,2,Sprint 7,"- k, quartile cut-off and drawdown threshold are changeable without code changes
+- Invalid values (for example k less than 1) are rejected with a clear error
+- Parameters used are stored with each flag run",screening config,To Do
+Story,,Implement as-of review-flag rule,"Ref: FLG-02. Default rule: at month-end t flag a fund when its 3-year rolling return is in the bottom quartile of its category, its drawdown is worse than the category median, and both hold for k consecutive month-ends. All inputs are as of t. Linked: FR-A5.",Review-flag engine,Highest,5,Sprint 8,"- Given a fund meeting both conditions for k consecutive month-ends, then it is flagged at the kth month-end
+- A fund meeting the conditions for fewer than k month-ends is not flagged
+- Increasing k yields a subset of the flags produced by a smaller k
+- Funds with null inputs are not flagged and are marked not eligible",screening sql python,To Do
+Story,,Generate explanation text for every flag,"Ref: FLG-03. Each flag row stores a structured and human-readable explanation naming the triggering conditions with values and wording that makes clear it is a research-review flag, not a recommendation. Linked: FR-A5, US-RA-03.",Review-flag engine,Highest,3,Sprint 8,"- Every flag has a non-empty explanation
+- Explanation contains 3-year return, category quartile, drawdown vs category median and k count
+- Explanation text never uses buy, sell or recommend wording",screening explainability,To Do
+Story,,Test that flags use no future information,"Ref: FLG-04. Add correctness tests that alter NAV data after month-end t and verify that metrics and flags at t are unchanged. Linked: FR-A5, US-DL-04.",Review-flag engine,Highest,3,Sprint 8,"- Altering data after t does not change flags at t
+- Test covers both the metrics layer and the flag layer
+- Test failure message names the offending month-end",screening testing look-ahead,To Do
+Story,,"Forward 12-month return, excess return target y and time split","Ref: BT-01. Compute each fund's forward 12-month return and y = fund forward return minus category median forward return. Define the chronological split (about 60% tuning, remainder out-of-sample) and record the split date. Linked: FR-A6.",Backtesting,Highest,3,Sprint 8,"- y is computed only where the full 12-month forward window exists
+- Forward returns are used only for evaluation, never for flag computation
+- Split date is recorded and the out-of-sample period starts strictly after it",backtesting sql,To Do
+Story,,Ad-hoc SQL library (at least ten queries),"Ref: DB-07. Write at least ten SQL files in sql/adhoc, each starting with the business question. Cover CTEs, window functions, aggregations, joins, ranking, time-series analysis, data-quality investigation and performance comparison. Test each against the actual schema. Linked: FR-A9, US-RA-08.",Database engineering,Medium,5,Sprint 8,"- At least ten files exist in sql/adhoc
+- Each file begins with a business-question comment
+- An automated check executes every file against the database without error
+- Listed techniques are each used by at least one query",sql adhoc,To Do
+Story,,Create monthly_refresh.yml workflow (scheduled and manual),"Ref: AUT-03. GitHub Actions workflow with monthly cron and manual dispatch: retrieve latest NAV, load, run DQ checks, fail when critical issues exist. Uses repository secrets for the database; extended later with analytics refresh and report. Linked: FR-A8, US-DO-04.",Automation and deployment,High,3,Sprint 8,"- Workflow is triggered by schedule and workflow_dispatch
+- A simulated critical issue makes the run fail
+- Database credentials are read from repository secrets only",automation github-actions,To Do
+Story,,Tune parameters on training period only,"Ref: BT-02. Implement parameter search (for example k and quartile cut-off) using only training-period data, store chosen parameters and the search grid, and freeze them before any out-of-sample evaluation. Linked: FR-A5, FR-A6.",Backtesting,Highest,3,Sprint 9,"- Tuning reads no observations after the split date
+- Chosen parameters and search grid are stored in results
+- Out-of-sample evaluation uses the frozen parameters",backtesting screening,To Do
+Story,,Baselines: bottom-quartile 1-year return and permutation random flags,"Ref: BT-03. Implement Baseline 1 (bottom-quartile one-year return screen) and Baseline 2 (random flags at the same flag rate per month-end, via permutation with recorded seeds). Linked: FR-A6.",Backtesting,Highest,5,Sprint 9,"- Baseline 1 uses only 1-year return as of each month-end
+- Baseline 2 preserves the number of flags per month-end and uses a recorded seed
+- Both baselines produce results on the same evaluation set as the main rule",backtesting statistics,To Do
+Story,,Fund-clustered block bootstrap and 95% confidence intervals,"Ref: BT-04. Implement the block bootstrap clustered by fund to account for overlapping 12-month windows and dependence, report 95% CIs for mean excess return of flagged funds and differences vs baselines. Document assumptions and block length choice. Linked: FR-A6, US-DL-02.",Backtesting,Highest,5,Sprint 9,"- CIs are reported for the rule, both baselines and differences
+- Resampling unit and block length are documented
+- Bootstrap seed is recorded and results are reproducible
+- A synthetic known-answer test confirms the bootstrap behaves sensibly (clearly labelled synthetic)",backtesting statistics,To Do
+Story,,"Document survivorship bias, look-ahead and other limitations","Ref: BT-05. Write a limitations section covering survivorship bias, missing closed or merged schemes, excluded legacy categories, overlapping windows, data gaps and the limits of what the results can show. Make it available to the dashboard. Linked: FR-A6, US-DL-03.",Backtesting,High,2,Sprint 9,"- Limitations text names survivorship bias and excluded closed or merged schemes
+- Text states that results do not by themselves demonstrate predictive ability
+- Text is stored once and reused by RESULTS.md and the dashboard",backtesting docs,To Do
+Story,,Backtesting correctness tests,"Ref: BT-06. Test the evaluation framework: no look-ahead, correct forward-window alignment, correct train/test split, flag-rate matching for Baseline 2, and handling of funds that end before their forward window. Linked: FR-A6, US-DL-04.",Backtesting,High,3,Sprint 9,"- Perturbing post-t data leaves flags and metrics at t unchanged
+- Forward-window alignment is verified on a hand-built example
+- Funds with incomplete forward windows are excluded and counted",backtesting testing,To Do
+Story,,Generate RESULTS.md and make reproduce,"Ref: BT-07. Produce RESULTS.md from the backtest outputs and implement make reproduce so each reported figure has measured value, baseline, dataset size and evaluation period. Report negative or inconclusive outcomes as such. Linked: NFR-1, NFR-8.",Backtesting,Highest,3,Sprint 9,"- make reproduce regenerates every figure in RESULTS.md
+- Each figure states measured value, baseline, dataset size and evaluation period
+- Wording does not claim predictive ability unless the evidence supports it
+- Any synthetic data used is labelled",backtesting docs reproducibility,To Do
+Story,,"Fund review screen with filters, trigger reasons and CSV export","Ref: DSH-03. Dashboard section A: flagged funds with category and month-end filters, trigger reasons, performance metrics and CSV export including refresh date and disclosure. Figures validated against SQL. Linked: FR-A7, US-RA-01, US-RA-02, US-RA-03.",Dashboard,Highest,5,Sprint 9,"- Category and month-end filters change the list and the displayed count
+- Trigger reasons are shown for each flagged fund
+- CSV export matches the filtered rows and includes the refresh date and disclosure
+- Sampled values match the underlying SQL",dashboard screening,To Do
+Story,,Fund drilldown with category comparison and flag timeline,"Ref: DSH-04. Dashboard section B: NAV history, rolling returns, volatility, drawdown, category median and quartile comparison, percentile rank, and flag timeline. Values validated against SQL. Linked: FR-A7, US-RA-04, US-RA-05.",Dashboard,High,5,Sprint 10,"- Charts show NAV, rolling CAGR, volatility and drawdown
+- Category median, quartile bounds and peer count are shown
+- Insufficient history is displayed explicitly
+- Flag timeline lists past flagged month-ends",dashboard metrics,To Do
+Story,,"Backtesting page with baselines, CIs, dataset size and limitations","Ref: DSH-05. Dashboard section D: methodology, out-of-sample results, baseline comparisons, confidence intervals, dataset size, evaluation period and limitations, with inconclusive results labelled as such. Linked: FR-A7, US-DL-02, US-DL-03.",Dashboard,High,3,Sprint 10,"- Rule and both baselines are shown with 95% confidence intervals
+- Dataset size and evaluation period are displayed
+- Limitations are visible on the same page
+- Results whose intervals include zero are labelled inconclusive",dashboard backtesting,To Do
+Story,,Orchestrate end-to-end refresh with critical-failure gate,"Ref: AUT-04. Single pipeline command: ingest, validate, load, DQ checks, gate, refresh metrics, flags and backtest outputs. Wire it into the monthly workflow. Linked: FR-A3, FR-A8.",Automation and deployment,High,3,Sprint 10,"- One command runs all stages in order
+- Pipeline stops before analytics when a critical issue exists
+- Workflow calls the same command used locally",automation pipeline,To Do
+Story,,Generate refresh report,"Ref: AUT-05. Produce a refresh report (rows downloaded, loaded, rejected, issues by severity, duration, status) and upload as a workflow artefact, including on failure. Linked: FR-A8, US-DO-07.",Automation and deployment,Medium,2,Sprint 10,"- Report contains row counts, issue counts by severity, duration and status
+- Report is produced on failure and states the reason
+- Report is uploaded as a workflow artefact",automation reporting,To Do
+Story,,Publish dashboard and record last-refresh metadata,"Ref: AUT-06. Choose a hosting option for the dashboard, publish it with a read-only database connection and expose last successful refresh date. Only publish derived data permitted by the licensing review. Linked: FR-A7, NFR-5, NFR-6.",Automation and deployment,Low,3,Sprint 10,"- Published dashboard shows last successful refresh date and disclosure
+- Published data respects the AMFI terms review in DATA_CARD
+- No secrets are present in the repository or client-side code",deployment dashboard,To Do
+Story,,Indexing review and measured query performance,"Ref: DB-08. Measure ingestion time, row counts, key query and dashboard query latency, and materialised view refresh time; add indexes where justified and compare before and after. State dataset size for every measurement. Linked: NFR-4.",Database engineering,Medium,3,Sprint 10,"- Each measurement states the dataset size and hardware context
+- Before and after latency is recorded for each added index
+- No figure is quoted unless it was measured by a re-runnable script",sql performance,To Do
+Story,,"Final documentation, honesty review and pre-publication checks","Ref: DOC-04. Finalise README, ARCHITECTURE, DECISIONS, DATA_CARD, BRD RTM statuses and USER_STORIES; check no secrets are committed; check claims against the honesty rules (no real clients, AUM or users; no production-grade or GIPS-compliant claims; every resume statement supported by RESULTS.md). Linked: NFR-8, BO-6.",Documentation and testing,High,5,Sprint 10,"- BRD traceability matrix statuses match actual repository state
+- Secret scan finds no credentials in the repository history
+- Text search finds no claim of real clients, AUM, users, production-grade or GIPS compliance
+- Every metric quoted in the README appears in RESULTS.md",docs honesty review,To Do

@@ -1,0 +1,39 @@
+# FundLens ingestion scope. Changing this changes WHICH lines are stored in the database
+# (raw files on disk always keep every line). The hash of this file is recorded per file.
+
+[history]
+# AMFI's historical endpoint returns no data before 2006-04-01 (verified 2026-11-07;
+# earlier requests return an HTML error page, not NAV data).
+start_date = "2006-04-01"
+# Longest range a single request may span. Verified: 105 days OK, 366 days rejected (302).
+chunk_days = 90
+
+[plan]
+# SEBI mandated Direct plans from 2013-01-01, so pre-2013 history can only be Regular.
+# Both are ingested; analytics are always computed WITHIN a plan type (never mixed) and
+# default to DIRECT per the PRD. See docs/DECISIONS.md D-004.
+include = ["DIRECT", "REGULAR"]
+analysis_default = "DIRECT"
+
+[option]
+include = ["GROWTH"]
+
+# Sub-category text (after "Equity Scheme(s) - " in AMFI section headers, lower-cased)
+# -> normalised category. Only "Open Ended Schemes ( Equity Scheme(s) - X )" sections are
+# considered. Legacy headers such as "( Growth )" and "( ELSS )" hold schemes AMFI has not
+# re-categorised (largely closed/merged); they are excluded because assigning them a
+# category from the scheme name would be guesswork. Documented as a survivorship limitation.
+# Sectoral/Thematic is excluded: those funds are not comparable peers.
+[categories]
+"large cap fund"          = "Large Cap"
+"large & mid cap fund"    = "Large & Mid Cap"
+"mid cap fund"            = "Mid Cap"
+"small cap fund"          = "Small Cap"
+"multi cap fund"          = "Multi Cap"
+"flexi cap fund"          = "Flexi Cap"
+"focused fund"            = "Focused"
+"value fund"              = "Value"
+"contra fund"             = "Contra"
+"dividend yield fund"     = "Dividend Yield"
+"elss"                    = "ELSS"
+"elss- tax saver fund"    = "ELSS"

@@ -1,0 +1,21 @@
+# Review-flag methodology (FR-A5). A flag is a RESEARCH-REVIEW flag, not a recommendation.
+#
+# A fund is flagged at month-end t when, for k consecutive month-ends ending at t:
+#   (1) its 3-year CAGR percentile rank within (category, plan type) is <= return_rank_threshold
+#       (0.25 = bottom quartile), AND
+#   (2) its 3-year max drawdown is worse (more negative) than the category median
+#       (skipped if require_drawdown_worse_than_median = false).
+# Only funds in peer groups with at least min_peers measurable members are considered.
+
+[default]
+k = 3
+return_rank_threshold = 0.25
+require_drawdown_worse_than_median = true
+min_peers = 8
+plan_type = "DIRECT"
+
+# Candidate values searched on the TRAINING period only (see backtesting).
+[tuning_grid]
+k = [1, 2, 3, 4, 6]
+return_rank_threshold = [0.20, 0.25, 0.33]
+require_drawdown_worse_than_median = [true, false]
