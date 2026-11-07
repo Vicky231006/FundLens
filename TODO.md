@@ -22,11 +22,14 @@ requirements live in `PROMPT.md` (§8 functional requirements FR-A1…FR-A9, §1
 
 ## Results and evidence
 
-- [ ] **Generate `RESULTS.md`** by running the full chain on real ingested data:
+- [x] **Generate `RESULTS.md`** by running the full chain on real ingested data:
       `.\make.ps1 reproduce` (db-up → migrate → ingest → pipeline).
-      Currently absent from the repository (only `results/.gitkeep` exists). Must contain **genuine
-      measured outcomes** — never fabricated. Blocked on: real AMFI ingestion having been run to completion
-      on the development database.
+      Now generated (2026-11-07): `RESULTS.md` + `results/backtest_{direct,regular}.json` +
+      `results/refresh_report.md` from a completed pipeline run (runtime 238.9 s). Content:
+      DIRECT OOS default/tuned and REGULAR OOS default/tuned backtests with bootstrap CIs and
+      permutation tests; interpretation honestly reported as inconclusive where CIs include zero.
+- [x] **Generate `docs/PERFORMANCE.md`** via `scripts/measure_performance.py` (measured 2026-11-07:
+      88,300 month-end metric rows; index latency measured with/without via rolled-back transaction).
 
 ## Operations and delivery
 
@@ -50,3 +53,5 @@ requirements live in `PROMPT.md` (§8 functional requirements FR-A1…FR-A9, §1
 - [x] Architectural decisions recorded in `docs/DECISIONS.md` (D-001…D-014).
 - [x] Continuous integration workflow added (`.github/workflows/ci.yml`).
 - [x] Monthly-refresh workflow skeleton added (`.github/workflows/monthly_refresh.yml`).
+- [x] Full analytics pipeline run to completion on real ingested data (2026-11-07); critical DQ gate
+      dispositioned and passed; `RESULTS.md`, backtest JSONs and refresh report generated.

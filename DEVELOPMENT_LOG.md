@@ -37,6 +37,13 @@ issues, next steps.
 | `.venv/Scripts/python.exe -m ruff format --check src tests` | **36 files already formatted** |
 | `.venv/Scripts/python.exe -m fundlens.cli pipeline` | **Stopped at DQ gate** (exit 2) — 252 CRITICAL `NON_POSITIVE_NAV` unresolved |
 
+### Follow-up run (2026-11-07, post-disposition)
+
+| Command | Result |
+|---|---|
+| `.venv/Scripts/python.exe -m fundlens.cli pipeline` | **Completed** (238.9 s) — DQ gate passed after disposition of 252 CRITICAL `NON_POSITIVE_NAV`; wrote `RESULTS.md` + `results/`, built marts, screening and backtests |
+| `.venv/Scripts/python.exe scripts/measure_performance.py` | **Wrote `docs/PERFORMANCE.md`** (2026-11-07) |
+
 ### Results
 
 - Full test suite green; lint and format clean; working tree clean; git history reduced to a single
@@ -44,26 +51,29 @@ issues, next steps.
 - Pipeline run on the developer database (ingestion 2026-11-07: 84 source files, 1,777,789 NAV rows loaded,
   success) reached the DQ gate and stopped on unresolved CRITICAL issues, so `RESULTS.md` and downstream
   screening/backtest outputs were **not** produced by that run.
-- `scripts/measure_performance.py` writes `docs/PERFORMANCE.md` and was written to consume
-  `marts.mv_scheme_month_metrics` / `marts.mv_scheme_month_end_nav`; those object names were not present in
-  the migrated database (current marts objects: `v_month_end` plus `backtest_run`, `review_flag`,
-  `screening_run`), so the script could not be executed against this database as-is.
+- After disposition of the CRITICAL findings, the pipeline re-run completed end-to-end (238.9 s; marts
+  `020_scheme_month_metrics.sql` 131.98 s): DQ → marts → screening → backtests → wrote `RESULTS.md` and
+  `results/{backtest_direct,backtest_regular}.json`, `results/refresh_report.md`.
+- `scripts/measure_performance.py` executed successfully and wrote `docs/PERFORMANCE.md` (2026-11-07).
 
 ### Known issues
 
-- `RESULTS.md` not yet generated (no pipeline run has produced measured outcomes).
 - Power BI `.pbix` not built (FR-A7 owner action; see `TODO.md`).
 - Hosted PostgreSQL for scheduled refresh not yet provisioned (D-013).
 - JIRA Cloud project not yet created (generated backlog export only).
-- Pipeline currently blocked by unresolved CRITICAL `NON_POSITIVE_NAV` data-quality findings (252).
 
 ### Next steps
 
-- Disposition of the CRITICAL `NON_POSITIVE_NAV` findings (investigate source, then resolve / acknowledge /
-      mark WONT_FIX as appropriate) and re-run `fundlens pipeline`.
-- Run `scripts/measure_performance.py` once the marts view names it expects exist, then commit
-      `docs/PERFORMANCE.md`.
-- Run `.\make.ps1 reproduce` on real ingested data and commit the genuine `RESULTS.md`.
 - Build the Power BI `.pbix` (owner action).
 - Provision hosted Postgres for the monthly refresh; create the JIRA Cloud project.
+- Final project review / interview-defensibility pass (PROMPT.md §17): walk the definition-of-done
+      checklist end to end and close anything still open.
+
+## 2026-11-07 — Delivery follow-up (post DQ disposition)
+
+- Dispositioned the 252 CRITICAL `NON_POSITIVE_NAV` findings (all with `nav = 0.0`) as resolved with an
+  explanatory note; observations were not deleted (raw layer immutable).
+- Re-ran `fundlens pipeline`: completed, wrote `RESULTS.md` + `results/`, critical gate passed.
+- Generated `docs/PERFORMANCE.md` via `scripts/measure_performance.py`.
+- Re-run full test suite and lint after the pipeline/DB changes.
 
