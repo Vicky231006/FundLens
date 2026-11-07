@@ -1,0 +1,697 @@
+{
+  "plan_type": "REGULAR",
+  "config": {
+    "plan_type": "REGULAR",
+    "train_fraction": 0.6,
+    "min_peers": 8,
+    "baseline_rank_threshold": 0.25,
+    "min_train_flag_obs": 100,
+    "n_bootstrap": 5000,
+    "n_permutations": 2000,
+    "block_len_months": 12,
+    "seed": 20240607
+  },
+  "dataset": {
+    "n_schemes_with_metrics": 402,
+    "n_scheme_month_rows": 50237,
+    "screenable_month_ends": 211,
+    "first_screenable_month_end": "2009-04-29",
+    "last_screenable_month_end": "2026-10-30",
+    "train_month_ends": 126,
+    "test_month_ends": 85,
+    "test_start": "2019-10-31",
+    "train_labels_purged_before": "2019-10-31",
+    "n_categories": 11
+  },
+  "tuning_trials": [
+    {
+      "k": 1,
+      "return_rank_threshold": 0.2,
+      "require_drawdown_worse_than_median": true,
+      "train_flag_obs": 2520,
+      "train_mean_y": -0.00628095781347156
+    },
+    {
+      "k": 1,
+      "return_rank_threshold": 0.2,
+      "require_drawdown_worse_than_median": false,
+      "train_flag_obs": 3518,
+      "train_mean_y": -0.007280587969969008
+    },
+    {
+      "k": 1,
+      "return_rank_threshold": 0.25,
+      "require_drawdown_worse_than_median": true,
+      "train_flag_obs": 2983,
+      "train_mean_y": -0.00551092235983784
+    },
+    {
+      "k": 1,
+      "return_rank_threshold": 0.25,
+      "require_drawdown_worse_than_median": false,
+      "train_flag_obs": 4245,
+      "train_mean_y": -0.006663814746694321
+    },
+    {
+      "k": 1,
+      "return_rank_threshold": 0.33,
+      "require_drawdown_worse_than_median": true,
+      "train_flag_obs": 3467,
+      "train_mean_y": -0.0036576586576765944
+    },
+    {
+      "k": 1,
+      "return_rank_threshold": 0.33,
+      "require_drawdown_worse_than_median": false,
+      "train_flag_obs": 5127,
+      "train_mean_y": -0.00550043280731757
+    },
+    {
+      "k": 2,
+      "return_rank_threshold": 0.2,
+      "require_drawdown_worse_than_median": true,
+      "train_flag_obs": 2190,
+      "train_mean_y": -0.008160029607101254
+    },
+    {
+      "k": 2,
+      "return_rank_threshold": 0.2,
+      "require_drawdown_worse_than_median": false,
+      "train_flag_obs": 3035,
+      "train_mean_y": -0.008464159429620682
+    },
+    {
+      "k": 2,
+      "return_rank_threshold": 0.25,
+      "require_drawdown_worse_than_median": true,
+      "train_flag_obs": 2633,
+      "train_mean_y": -0.007135317569869088
+    },
+    {
+      "k": 2,
+      "return_rank_threshold": 0.25,
+      "require_drawdown_worse_than_median": false,
+      "train_flag_obs": 3723,
+      "train_mean_y": -0.007629308296414512
+    },
+    {
+      "k": 2,
+      "return_rank_threshold": 0.33,
+      "require_drawdown_worse_than_median": true,
+      "train_flag_obs": 3100,
+      "train_mean_y": -0.004946907963522381
+    },
+    {
+      "k": 2,
+      "return_rank_threshold": 0.33,
+      "require_drawdown_worse_than_median": false,
+      "train_flag_obs": 4565,
+      "train_mean_y": -0.005929381709012699
+    },
+    {
+      "k": 3,
+      "return_rank_threshold": 0.2,
+      "require_drawdown_worse_than_median": true,
+      "train_flag_obs": 1963,
+      "train_mean_y": -0.00878244092848623
+    },
+    {
+      "k": 3,
+      "return_rank_threshold": 0.2,
+      "require_drawdown_worse_than_median": false,
+      "train_flag_obs": 2716,
+      "train_mean_y": -0.009109517591519272
+    },
+    {
+      "k": 3,
+      "return_rank_threshold": 0.25,
+      "require_drawdown_worse_than_median": true,
+      "train_flag_obs": 2396,
+      "train_mean_y": -0.007326107959534633
+    },
+    {
+      "k": 3,
+      "return_rank_threshold": 0.25,
+      "require_drawdown_worse_than_median": false,
+      "train_flag_obs": 3372,
+      "train_mean_y": -0.007876393517961993
+    },
+    {
+      "k": 3,
+      "return_rank_threshold": 0.33,
+      "require_drawdown_worse_than_median": true,
+      "train_flag_obs": 2837,
+      "train_mean_y": -0.005369274698064511
+    },
+    {
+      "k": 3,
+      "return_rank_threshold": 0.33,
+      "require_drawdown_worse_than_median": false,
+      "train_flag_obs": 4174,
+      "train_mean_y": -0.006003868026938285
+    },
+    {
+      "k": 4,
+      "return_rank_threshold": 0.2,
+      "require_drawdown_worse_than_median": true,
+      "train_flag_obs": 1782,
+      "train_mean_y": -0.009302199238571441
+    },
+    {
+      "k": 4,
+      "return_rank_threshold": 0.2,
+      "require_drawdown_worse_than_median": false,
+      "train_flag_obs": 2471,
+      "train_mean_y": -0.009962260698721026
+    },
+    {
+      "k": 4,
+      "return_rank_threshold": 0.25,
+      "require_drawdown_worse_than_median": true,
+      "train_flag_obs": 2205,
+      "train_mean_y": -0.007239865160583342
+    },
+    {
+      "k": 4,
+      "return_rank_threshold": 0.25,
+      "require_drawdown_worse_than_median": false,
+      "train_flag_obs": 3107,
+      "train_mean_y": -0.00823535498185534
+    },
+    {
+      "k": 4,
+      "return_rank_threshold": 0.33,
+      "require_drawdown_worse_than_median": true,
+      "train_flag_obs": 2614,
+      "train_mean_y": -0.005251490733044986
+    },
+    {
+      "k": 4,
+      "return_rank_threshold": 0.33,
+      "require_drawdown_worse_than_median": false,
+      "train_flag_obs": 3860,
+      "train_mean_y": -0.0060201113168016455
+    },
+    {
+      "k": 6,
+      "return_rank_threshold": 0.2,
+      "require_drawdown_worse_than_median": true,
+      "train_flag_obs": 1499,
+      "train_mean_y": -0.010214128632566375
+    },
+    {
+      "k": 6,
+      "return_rank_threshold": 0.2,
+      "require_drawdown_worse_than_median": false,
+      "train_flag_obs": 2097,
+      "train_mean_y": -0.011464499755053838
+    },
+    {
+      "k": 6,
+      "return_rank_threshold": 0.25,
+      "require_drawdown_worse_than_median": true,
+      "train_flag_obs": 1897,
+      "train_mean_y": -0.007445984330494041
+    },
+    {
+      "k": 6,
+      "return_rank_threshold": 0.25,
+      "require_drawdown_worse_than_median": false,
+      "train_flag_obs": 2687,
+      "train_mean_y": -0.00911196829169592
+    },
+    {
+      "k": 6,
+      "return_rank_threshold": 0.33,
+      "require_drawdown_worse_than_median": true,
+      "train_flag_obs": 2253,
+      "train_mean_y": -0.0057246175890933336
+    },
+    {
+      "k": 6,
+      "return_rank_threshold": 0.33,
+      "require_drawdown_worse_than_median": false,
+      "train_flag_obs": 3350,
+      "train_mean_y": -0.007149482341956057
+    }
+  ],
+  "default_params": {
+    "k": 3,
+    "return_rank_threshold": 0.25,
+    "require_drawdown_worse_than_median": true,
+    "min_peers": 8,
+    "plan_type": "REGULAR"
+  },
+  "tuned_params": {
+    "k": 6,
+    "return_rank_threshold": 0.2,
+    "require_drawdown_worse_than_median": false,
+    "min_peers": 8,
+    "plan_type": "REGULAR"
+  },
+  "periods": {
+    "default": {
+      "train": {
+        "label": "default/train",
+        "n_obs": 15370,
+        "n_funds": 188,
+        "n_month_ends": 114,
+        "first_month_end": "2009-04-29",
+        "last_month_end": "2018-09-28",
+        "mean_y_all_eligible": 0.0007480907811146203,
+        "screen": {
+          "n_flag_obs": 2396,
+          "n_funds": 101,
+          "n_month_ends": 112,
+          "mean_y": -0.007326107959534633,
+          "median_y": -0.0027530518224472686,
+          "share_underperforming_peer_median": 0.5246243739565943
+        },
+        "baseline_bottom_quartile_1y": {
+          "n_flag_obs": 4120,
+          "n_funds": 175,
+          "n_month_ends": 114,
+          "mean_y": -0.0018315266916245794,
+          "median_y": -0.002604499554295446,
+          "share_underperforming_peer_median": 0.5233009708737864
+        },
+        "ci_fund_cluster_bootstrap": {
+          "screen": {
+            "estimate": -0.007326107959534633,
+            "ci_lower": -0.01805145926029875,
+            "ci_upper": 0.004703994960808182
+          },
+          "baseline_bottom_quartile_1y": {
+            "estimate": -0.0018315266916245794,
+            "ci_lower": -0.00922141759954363,
+            "ci_upper": 0.0058976753284134785
+          },
+          "all_eligible": {
+            "estimate": 0.0007480907811146203,
+            "ci_lower": -0.00383007599354594,
+            "ci_upper": 0.0054114042244439685
+          },
+          "screen - baseline_bottom_quartile_1y": {
+            "estimate": -0.005494581267910054,
+            "ci_lower": -0.013250015402201318,
+            "ci_upper": 0.0024795920133058764
+          },
+          "screen - all_eligible": {
+            "estimate": -0.008074198740649253,
+            "ci_lower": -0.01775559637903771,
+            "ci_upper": 0.0022158738222914326
+          },
+          "baseline_bottom_quartile_1y - all_eligible": {
+            "estimate": -0.0025796174727391995,
+            "ci_lower": -0.008170506518079056,
+            "ci_upper": 0.0028834960109421328
+          }
+        },
+        "ci_month_block_bootstrap": {
+          "screen": {
+            "estimate": -0.007326107959534633,
+            "ci_lower": -0.020273729702187073,
+            "ci_upper": 0.007058858426210798
+          },
+          "baseline_bottom_quartile_1y": {
+            "estimate": -0.0018315266916245794,
+            "ci_lower": -0.015086002857099327,
+            "ci_upper": 0.013182408461619773
+          },
+          "all_eligible": {
+            "estimate": 0.0007480907811146203,
+            "ci_lower": -0.0013191053838300293,
+            "ci_upper": 0.0027578260544083863
+          },
+          "screen - baseline_bottom_quartile_1y": {
+            "estimate": -0.005494581267910054,
+            "ci_lower": -0.014154832646364924,
+            "ci_upper": 0.0033306206947639103
+          },
+          "screen - all_eligible": {
+            "estimate": -0.008074198740649253,
+            "ci_lower": -0.019873408332952758,
+            "ci_upper": 0.0048720841879090595
+          },
+          "baseline_bottom_quartile_1y - all_eligible": {
+            "estimate": -0.0025796174727391995,
+            "ci_lower": -0.014370408434697658,
+            "ci_upper": 0.011061361857766391
+          }
+        },
+        "permutation_random_flags_screen": {
+          "observed_mean_y": -0.007326107959534635,
+          "random_flags_mean_y": -0.00017246690987871724,
+          "random_flags_ci_lower": -0.0028725006095185273,
+          "random_flags_ci_upper": 0.002607688888300185,
+          "p_value_flagged_worse_than_random": 0.0004997501249375312,
+          "n_permutations": 2000
+        },
+        "permutation_random_flags_baseline1": {
+          "observed_mean_y": -0.0018315266916245816,
+          "random_flags_mean_y": 0.0009928731817278348,
+          "random_flags_ci_lower": -0.0009422174146227439,
+          "random_flags_ci_upper": 0.0029277349184643987,
+          "p_value_flagged_worse_than_random": 0.00399800099950025,
+          "n_permutations": 2000
+        },
+        "screen_vs_baseline_ci_includes_zero_fund_cluster": true
+      },
+      "test": {
+        "label": "default/test",
+        "n_obs": 14183,
+        "n_funds": 267,
+        "n_month_ends": 73,
+        "first_month_end": "2019-10-31",
+        "last_month_end": "2025-10-31",
+        "mean_y_all_eligible": 0.002793353669943505,
+        "screen": {
+          "n_flag_obs": 1991,
+          "n_funds": 130,
+          "n_month_ends": 73,
+          "mean_y": 0.013802658423791754,
+          "median_y": 0.0041162471867294825,
+          "share_underperforming_peer_median": 0.4439979909593169
+        },
+        "baseline_bottom_quartile_1y": {
+          "n_flag_obs": 3717,
+          "n_funds": 239,
+          "n_month_ends": 73,
+          "mean_y": 8.000616201572685e-05,
+          "median_y": -0.0011387632334914008,
+          "share_underperforming_peer_median": 0.5127791229486145
+        },
+        "ci_fund_cluster_bootstrap": {
+          "screen": {
+            "estimate": 0.013802658423791754,
+            "ci_lower": 0.004487492867320181,
+            "ci_upper": 0.02453486968483966
+          },
+          "baseline_bottom_quartile_1y": {
+            "estimate": 8.000616201572685e-05,
+            "ci_lower": -0.005784643633439213,
+            "ci_upper": 0.0063964614479856685
+          },
+          "all_eligible": {
+            "estimate": 0.002793353669943505,
+            "ci_lower": -0.00115400274158062,
+            "ci_upper": 0.00674883379175999
+          },
+          "screen - baseline_bottom_quartile_1y": {
+            "estimate": 0.013722652261776028,
+            "ci_lower": 0.005866543882745917,
+            "ci_upper": 0.02236714448899298
+          },
+          "screen - all_eligible": {
+            "estimate": 0.011009304753848249,
+            "ci_lower": 0.0031147217582178574,
+            "ci_upper": 0.01997010696701466
+          },
+          "baseline_bottom_quartile_1y - all_eligible": {
+            "estimate": -0.002713347507927778,
+            "ci_lower": -0.006906300109011861,
+            "ci_upper": 0.0014745690370559913
+          }
+        },
+        "ci_month_block_bootstrap": {
+          "screen": {
+            "estimate": 0.013802658423791754,
+            "ci_lower": 0.007175925769683403,
+            "ci_upper": 0.021575163501518974
+          },
+          "baseline_bottom_quartile_1y": {
+            "estimate": 8.000616201572685e-05,
+            "ci_lower": -0.011804773553347768,
+            "ci_upper": 0.012548342117845957
+          },
+          "all_eligible": {
+            "estimate": 0.002793353669943505,
+            "ci_lower": 0.00031057552428558283,
+            "ci_upper": 0.005562264638349017
+          },
+          "screen - baseline_bottom_quartile_1y": {
+            "estimate": 0.013722652261776028,
+            "ci_lower": 0.003718127300214384,
+            "ci_upper": 0.024333445916565107
+          },
+          "screen - all_eligible": {
+            "estimate": 0.011009304753848249,
+            "ci_lower": 0.006466945468914572,
+            "ci_upper": 0.016245806440628306
+          },
+          "baseline_bottom_quartile_1y - all_eligible": {
+            "estimate": -0.002713347507927778,
+            "ci_lower": -0.014272168656029436,
+            "ci_upper": 0.008317776031887396
+          }
+        },
+        "permutation_random_flags_screen": {
+          "observed_mean_y": 0.013802658423791756,
+          "random_flags_mean_y": 0.0036876190384232143,
+          "random_flags_ci_lower": 0.0007108486658129064,
+          "random_flags_ci_upper": 0.006602776941856984,
+          "p_value_flagged_worse_than_random": 1.0,
+          "n_permutations": 2000
+        },
+        "permutation_random_flags_baseline1": {
+          "observed_mean_y": 8.00061620157259e-05,
+          "random_flags_mean_y": 0.003013748970672247,
+          "random_flags_ci_lower": 0.001129667055601357,
+          "random_flags_ci_upper": 0.004940544711109915,
+          "p_value_flagged_worse_than_random": 0.0034982508745627187,
+          "n_permutations": 2000
+        },
+        "screen_vs_baseline_ci_includes_zero_fund_cluster": false,
+        "interpretation": "Flagged funds did NOT underperform: they outperformed their category median on average."
+      }
+    },
+    "tuned": {
+      "train": {
+        "label": "tuned/train",
+        "n_obs": 15370,
+        "n_funds": 188,
+        "n_month_ends": 114,
+        "first_month_end": "2009-04-29",
+        "last_month_end": "2018-09-28",
+        "mean_y_all_eligible": 0.0007480907811146203,
+        "screen": {
+          "n_flag_obs": 2097,
+          "n_funds": 97,
+          "n_month_ends": 109,
+          "mean_y": -0.011464499755053838,
+          "median_y": -0.005865272300208696,
+          "share_underperforming_peer_median": 0.547925608011445
+        },
+        "baseline_bottom_quartile_1y": {
+          "n_flag_obs": 4120,
+          "n_funds": 175,
+          "n_month_ends": 114,
+          "mean_y": -0.0018315266916245794,
+          "median_y": -0.002604499554295446,
+          "share_underperforming_peer_median": 0.5233009708737864
+        },
+        "ci_fund_cluster_bootstrap": {
+          "screen": {
+            "estimate": -0.011464499755053838,
+            "ci_lower": -0.02155249071712724,
+            "ci_upper": -0.0002043104951011301
+          },
+          "baseline_bottom_quartile_1y": {
+            "estimate": -0.0018315266916245794,
+            "ci_lower": -0.00922141759954363,
+            "ci_upper": 0.0058976753284134785
+          },
+          "all_eligible": {
+            "estimate": 0.0007480907811146203,
+            "ci_lower": -0.00383007599354594,
+            "ci_upper": 0.0054114042244439685
+          },
+          "screen - baseline_bottom_quartile_1y": {
+            "estimate": -0.00963297306342926,
+            "ci_lower": -0.017916275465041633,
+            "ci_upper": -0.0014191297864420912
+          },
+          "screen - all_eligible": {
+            "estimate": -0.01221259053616846,
+            "ci_lower": -0.02149289724716475,
+            "ci_upper": -0.002201737544986673
+          },
+          "baseline_bottom_quartile_1y - all_eligible": {
+            "estimate": -0.0025796174727391995,
+            "ci_lower": -0.008170506518079056,
+            "ci_upper": 0.0028834960109421328
+          }
+        },
+        "ci_month_block_bootstrap": {
+          "screen": {
+            "estimate": -0.011464499755053838,
+            "ci_lower": -0.02577720654185319,
+            "ci_upper": 0.0043816871864133956
+          },
+          "baseline_bottom_quartile_1y": {
+            "estimate": -0.0018315266916245794,
+            "ci_lower": -0.015086002857099327,
+            "ci_upper": 0.013182408461619773
+          },
+          "all_eligible": {
+            "estimate": 0.0007480907811146203,
+            "ci_lower": -0.0013191053838300293,
+            "ci_upper": 0.0027578260544083863
+          },
+          "screen - baseline_bottom_quartile_1y": {
+            "estimate": -0.00963297306342926,
+            "ci_lower": -0.01935562992897764,
+            "ci_upper": 0.00018459078460441217
+          },
+          "screen - all_eligible": {
+            "estimate": -0.01221259053616846,
+            "ci_lower": -0.025512964673706912,
+            "ci_upper": 0.0025042778364469773
+          },
+          "baseline_bottom_quartile_1y - all_eligible": {
+            "estimate": -0.0025796174727391995,
+            "ci_lower": -0.014370408434697658,
+            "ci_upper": 0.011061361857766391
+          }
+        },
+        "permutation_random_flags_screen": {
+          "observed_mean_y": -0.011464499755053838,
+          "random_flags_mean_y": 4.006569172777823e-05,
+          "random_flags_ci_lower": -0.00276460186749367,
+          "random_flags_ci_upper": 0.002988755729428798,
+          "p_value_flagged_worse_than_random": 0.0004997501249375312,
+          "n_permutations": 2000
+        },
+        "permutation_random_flags_baseline1": {
+          "observed_mean_y": -0.0018315266916245816,
+          "random_flags_mean_y": 0.0009928731817278348,
+          "random_flags_ci_lower": -0.0009422174146227439,
+          "random_flags_ci_upper": 0.0029277349184643987,
+          "p_value_flagged_worse_than_random": 0.00399800099950025,
+          "n_permutations": 2000
+        },
+        "screen_vs_baseline_ci_includes_zero_fund_cluster": false
+      },
+      "test": {
+        "label": "tuned/test",
+        "n_obs": 14183,
+        "n_funds": 267,
+        "n_month_ends": 73,
+        "first_month_end": "2019-10-31",
+        "last_month_end": "2025-10-31",
+        "mean_y_all_eligible": 0.002793353669943505,
+        "screen": {
+          "n_flag_obs": 1859,
+          "n_funds": 122,
+          "n_month_ends": 73,
+          "mean_y": 0.005315995754067769,
+          "median_y": -0.0008078074735036744,
+          "share_underperforming_peer_median": 0.5110274341043571
+        },
+        "baseline_bottom_quartile_1y": {
+          "n_flag_obs": 3717,
+          "n_funds": 239,
+          "n_month_ends": 73,
+          "mean_y": 8.000616201572685e-05,
+          "median_y": -0.0011387632334914008,
+          "share_underperforming_peer_median": 0.5127791229486145
+        },
+        "ci_fund_cluster_bootstrap": {
+          "screen": {
+            "estimate": 0.005315995754067769,
+            "ci_lower": -0.002862093125915101,
+            "ci_upper": 0.014280190417406588
+          },
+          "baseline_bottom_quartile_1y": {
+            "estimate": 8.000616201572685e-05,
+            "ci_lower": -0.005784643633439213,
+            "ci_upper": 0.0063964614479856685
+          },
+          "all_eligible": {
+            "estimate": 0.002793353669943505,
+            "ci_lower": -0.00115400274158062,
+            "ci_upper": 0.00674883379175999
+          },
+          "screen - baseline_bottom_quartile_1y": {
+            "estimate": 0.005235989592052042,
+            "ci_lower": -0.0016278518292802953,
+            "ci_upper": 0.012887919552383557
+          },
+          "screen - all_eligible": {
+            "estimate": 0.002522642084124264,
+            "ci_lower": -0.004298315118142317,
+            "ci_upper": 0.009941977008786592
+          },
+          "baseline_bottom_quartile_1y - all_eligible": {
+            "estimate": -0.002713347507927778,
+            "ci_lower": -0.006906300109011861,
+            "ci_upper": 0.0014745690370559913
+          }
+        },
+        "ci_month_block_bootstrap": {
+          "screen": {
+            "estimate": 0.005315995754067769,
+            "ci_lower": -0.0007221550376111482,
+            "ci_upper": 0.013006795736313564
+          },
+          "baseline_bottom_quartile_1y": {
+            "estimate": 8.000616201572685e-05,
+            "ci_lower": -0.011804773553347768,
+            "ci_upper": 0.012548342117845957
+          },
+          "all_eligible": {
+            "estimate": 0.002793353669943505,
+            "ci_lower": 0.00031057552428558283,
+            "ci_upper": 0.005562264638349017
+          },
+          "screen - baseline_bottom_quartile_1y": {
+            "estimate": 0.005235989592052042,
+            "ci_lower": -0.00468455876919065,
+            "ci_upper": 0.01550381553929984
+          },
+          "screen - all_eligible": {
+            "estimate": 0.002522642084124264,
+            "ci_lower": -0.0018159542522623306,
+            "ci_upper": 0.007708956711599545
+          },
+          "baseline_bottom_quartile_1y - all_eligible": {
+            "estimate": -0.002713347507927778,
+            "ci_lower": -0.014272168656029436,
+            "ci_upper": 0.008317776031887396
+          }
+        },
+        "permutation_random_flags_screen": {
+          "observed_mean_y": 0.00531599575406777,
+          "random_flags_mean_y": 0.0027501028904744237,
+          "random_flags_ci_lower": -0.000277934743702607,
+          "random_flags_ci_upper": 0.0055628615156792715,
+          "p_value_flagged_worse_than_random": 0.9615192403798101,
+          "n_permutations": 2000
+        },
+        "permutation_random_flags_baseline1": {
+          "observed_mean_y": 8.00061620157259e-05,
+          "random_flags_mean_y": 0.003013748970672247,
+          "random_flags_ci_lower": 0.001129667055601357,
+          "random_flags_ci_upper": 0.004940544711109915,
+          "p_value_flagged_worse_than_random": 0.0034982508745627187,
+          "n_permutations": 2000
+        },
+        "screen_vs_baseline_ci_includes_zero_fund_cluster": true,
+        "interpretation": "Inconclusive: the 95% CI for the flagged funds' excess forward return includes zero, so the data do not show that flagged funds behave differently from peers."
+      }
+    }
+  },
+  "dataset_snapshot": {
+    "source_files": 85,
+    "source_files_fingerprint_sha256": "3b4af8eb70e4068ce6abec15fc1dd330e0be892bad492100ea675d0e596c0ea9",
+    "nav_rows": 1811703,
+    "first_nav_date": "2006-04-02",
+    "last_nav_date": "2026-11-06",
+    "schemes": 779,
+    "schemes_by_plan": {
+      "DIRECT": 375,
+      "REGULAR": 404
+    },
+    "last_successful_ingestion": "2026-11-07T13:29:43.413037+00:00"
+  }
+}
