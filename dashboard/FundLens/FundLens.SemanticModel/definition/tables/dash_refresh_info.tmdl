@@ -38,8 +38,9 @@ table dash_refresh_info
 		mode: import
 		source =
 				let
-					Source = Sql.Database("localhost", "fundlens"),
+					Source = Sql.Database("localhost:5433", "fundlens"),
 					dash_refresh_info = Source{[Schema="marts", Item="dash_refresh_info"]}[Data]
 				in
 					dash_refresh_info
+
 

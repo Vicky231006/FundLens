@@ -22,8 +22,9 @@ table dash_fund_month
 		mode: import
 		source =
 				let
-					Source = Sql.Database("localhost", "fundlens"),
+					Source = Sql.Database("localhost:5433", "fundlens"),
 					dash_fund_month = Source{[Schema="marts", Item="dash_fund_month"]}[Data]
 				in
 					dash_fund_month
+
 

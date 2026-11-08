@@ -17,10 +17,11 @@ table Fund
 		mode: import
 		source =
 				let
-					Source = Sql.Database("localhost", "fundlens"),
+					Source = Sql.Database("localhost:5433", "fundlens"),
 					View = Source{[Schema="marts", Item="dash_flag"]}[Data],
 					Filtered = Table.SelectRows(View, each [is_latest_month_end] = true and [plan_type] = "DIRECT"),
 					Grouped = Table.Group(Filtered, {"category"}, {{"FlagCount", each Table.RowCount(_), Int64.Type}}),
 					Renamed = Table.RenameColumns(Grouped, {{"category", "Category"}})
 				in
 					Renamed
+

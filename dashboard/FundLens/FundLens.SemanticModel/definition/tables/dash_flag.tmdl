@@ -29,8 +29,9 @@ table dash_flag
 		mode: import
 		source =
 				let
-					Source = Sql.Database("localhost", "fundlens"),
+					Source = Sql.Database("localhost:5433", "fundlens"),
 					dash_flag = Source{[Schema="marts", Item="dash_flag"]}[Data]
 				in
 					dash_flag
+
 

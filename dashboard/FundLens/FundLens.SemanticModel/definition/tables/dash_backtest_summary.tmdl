@@ -53,8 +53,9 @@ table dash_backtest_summary
 		mode: import
 		source =
 				let
-					Source = Sql.Database("localhost", "fundlens"),
+					Source = Sql.Database("localhost:5433", "fundlens"),
 					dash_backtest_summary = Source{[Schema="marts", Item="dash_backtest_summary"]}[Data]
 				in
 					dash_backtest_summary
+
 
