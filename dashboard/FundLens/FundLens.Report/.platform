@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.1.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "FundLens"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "550e6293-8694-49ea-9530-472b56c167be"
+  }
+}

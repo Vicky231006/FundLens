@@ -1,0 +1,48 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "0123456789abcdef0123",
+  "position": {
+    "x": 20,
+    "y": 20,
+    "z": 1000,
+    "height": 90,
+    "width": 360,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": { "SourceRef": { "Entity": "Fund" } },
+                  "Property": "FlaggedFunds"
+                }
+              },
+              "queryRef": "Fund.FlaggedFunds",
+              "nativeQueryRef": "Flagged Funds"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": { "SourceRef": { "Entity": "Fund" } },
+                "Property": "FlaggedFunds"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

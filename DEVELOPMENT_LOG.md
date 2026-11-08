@@ -77,3 +77,28 @@ issues, next steps.
 - Generated `docs/PERFORMANCE.md` via `scripts/measure_performance.py`.
 - Re-run full test suite and lint after the pipeline/DB changes.
 
+## 2026-11-07 — Agent-authored Power BI report project (FR-A7 path)
+
+- Searched for and applied a way to author the intended Power BI dashboard without the Desktop GUI: found
+  and installed Microsoft's official agent-first authoring toolkit (`@microsoft/powerbi-report-authoring-cli`,
+  CLI `powerbi-report-author` v0.5.0; requires Node >= 20; environment doctor passed: node 22.19.0, ajv ok,
+  57 visual types, schemas reachable).
+- Scaffolded a greenfield PBIP for the report name `FundLens` (`scaffold` → `validate`: succeeded, 0 errors).
+- Authored the intended four dashboard pages (Fund Review, Fund Drilldown, Data Quality, Backtesting) by
+  writing PBIR definition files (pages.json, page.json per page, visual.json per visual) with bindings to the
+  logical entities the future semantic model will expose (Fund, FundMonth, Flag, DataQuality, Backtest).
+- Re-validated the authored project (`validate` on `dashboard/FundLens/FundLens.pbip`): result `succeeded`,
+  0 errors, 1 benign warning (`PBIR_SCHEMA_UNREACHABLE` — the visualContainer 2.14.0 schema could not be
+  fetched at validation time, so schema validation was skipped for the authored visuals).
+- Attempted live render via the Power BI Desktop bridge (`preview --host desktop`, PBI_DESKTOP_PATH set to the
+  installed `PBIDesktop.exe` at
+  `C:\Program Files\WindowsApps\Microsoft.MicrosoftPowerBIDesktop_2.159.1231.0_x64__8wekyb3d8bbwe\bin\pbidesktop.exe`):
+  Desktop launched with the report (`opened: true`), but bridge instances remained in "Host is not ready to
+  accept operations" and no instance resolved to the report folder, so rendered screenshots were not captured.
+- Confirmed via the bridge manifest that only open/state/capture/reload-style operations exist — no Save-As /
+  no binary `.pbix` emission is exposed to agents. The authored artifact delivered in-repo is therefore the
+  PBIP project at `dashboard/FundLens/` (the `.pbix` equivalent, produced by Desktop's Save As, remains an
+  owner-side step).
+- Served the repo over local static HTTP for inspection: `http://127.0.0.1:8000/dashboard/FundLens/FundLens.pbip`.
+
+

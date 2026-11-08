@@ -1,0 +1,70 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "56789abcdef0123456789a",
+  "position": {
+    "x": 420,
+    "y": 20,
+    "z": 1000,
+    "height": 280,
+    "width": 840,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "barChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": { "SourceRef": { "Entity": "DataQuality" }, "Property": "IssueCategory" }
+                }
+              },
+              "queryRef": "DataQuality.IssueCategory",
+              "nativeQueryRef": "Issue Category",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": { "SourceRef": { "Entity": "DataQuality" }, "Property": "IssueId" }
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(DataQuality.IssueId)",
+              "nativeQueryRef": "Sum of IssueId"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Aggregation": {
+                "Expression": {
+                  "Column": {
+                    "Expression": { "SourceRef": { "Entity": "DataQuality" }, "Property": "IssueId" }
+                  }
+                },
+                "Function": 0
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,10 +1,14 @@
 # FundLens Power BI dashboard (FR-A7)
 
-> **Status: specification and data model are ready and tested; the `.pbix` file has NOT been built.**
+> **Status: an agent-authored PBIP report definition now exists and validates clean; the binary `.pbix` has NOT been built.**
 > An AI coding agent cannot operate Power BI Desktop's GUI, and hand-writing `.pbip`/PBIR internals without
 > being able to open them risks shipping a file that does not load. What *is* verified: every `marts.dash_*`
-> view exists, runs, and reconciles with the stored backtest JSON (`tests/integration/test_pipeline.py`).
-> Building the four pages below in Desktop takes roughly 45-60 minutes. Until then FR-A7 is **not complete**.
+> view exists, runs, and reconciles with the stored backtest JSON (`tests/integration/test_pipeline.py`); the
+> agent-authored project at `dashboard/FundLens/` (scaffolded with Microsoft's official `powerbi-report-author`
+> CLI, pages authored, then `validate`d) passed with 0 errors. The authoring toolkit emits/validates PBIR
+> definitions and drives Power BI Desktop over its bridge (open / reload / screenshot) but has no Save-As
+> capability, so the binary `.pbix` still has to be produced by Power BI Desktop itself (open the PBIP and save,
+> or File → Save As). Until then FR-A7 is **not complete**.
 
 ## Why Power BI
 

@@ -6,19 +6,19 @@ requirements live in `PROMPT.md` (§8 functional requirements FR-A1…FR-A9, §1
 ## Data and source
 
 - [ ] **FR-A7 dashboard: build the Power BI `.pbix` file.** Status: specification, data model and
-      `marts.dash_*` view reconciliation checks are done and tested; the `.pbix` itself has **not** been
-      built (an AI coding agent cannot operate the Power BI Desktop GUI; hand-writing PBIX internals risks
-      shipping an unloadable file). Owner action: build in Power BI Desktop and save locally (run against
-      own DB; no AMFI data committed). Until built, FR-A7 is incomplete.
+      `marts.dash_*` view reconciliation checks are done and tested; an AI agent authored the report
+      definition via Microsoft's official Power BI authoring CLI (`powerbi-report-author`, PBIP/PBIR):
+      scaffold + four pages (Fund Review, Fund Drilldown, Data Quality, Backtesting) authored at
+      `dashboard/FundLens/FundLens.pbip` and validated clean (0 errors, 1 benign schema-fetch warning).
+      The binary `.pbix` has not yet been produced (the authoring toolkit cannot Save As; it drives
+      Desktop only via open/reload/screenshot bridge). Owner action: open `dashboard/FundLens/FundLens.pbip`
+      in Power BI Desktop, bind the semantic model to the local DB, save as `.pbix`, finish page build,
+      save locally (run against own DB; no AMFI data committed). Until built, FR-A7 is incomplete.
 
-- [ ] **Resolve the CRITICAL data-quality blockers that stopped the analytics pipeline.**
-      `fundlens pipeline` (run 2026-11-07, ~19:00 IST) stopped at the DQ gate with **252 unresolved
-      CRITICAL `NON_POSITIVE_NAV` issues** (`nav <= 0`, all with `nav = 0.0`). Secondary findings were also
-      recorded: `MISSING_BUSINESS_DAY` ERROR 20 / WARNING 1226, `STALE_NAV` ERROR 7 / WARNING 23,
-      `ABNORMAL_NAV_MOVE` ERROR 15 / WARNING 64, `UNEXPECTED_DATA_TYPE` ERROR 13, `LOW_COVERAGE_DAY` WARNING 18.
-      Per design (`src/fundlens/validation/dq.py`) CRITICAL issues in `OPEN` / `ACKNOWLEDGED` stop the pipeline;
-      observations are never auto-deleted. Disposition of the `NON_POSITIVE_NAV` set is required before
-      `fundlens pipeline` can proceed to marts → screening → backtest → `RESULTS.md`.
+- [x] **Resolve the CRITICAL data-quality blockers that stopped the analytics pipeline.**
+      Done (2026-11-07): all 252 CRITICAL `NON_POSITIVE_NAV` findings dispositioned (resolved with explanatory
+      note; raw layer immutable, nothing silently deleted); re-ran `fundlens pipeline` to completion
+      (238.9 s) → `RESULTS.md` + `results/` generated; critical DQ gate passed.
 
 ## Results and evidence
 
@@ -48,7 +48,8 @@ requirements live in `PROMPT.md` (§8 functional requirements FR-A1…FR-A9, §1
 
 - [x] Phases 0–9 implementation order followed (see `docs/ARCHITECTURE.md` and `docs/BRD.md`).
 - [x] FR-A1…FR-A6, FR-A8, FR-A9 implemented and covered by unit / property / integration tests.
-- [x] FR-A7 design and view-level verification complete; `.pbix` build pending owner action (above).
+- [x] FR-A7 design and view-level verification complete; agent-authored PBIP at `dashboard/FundLens/`
+      validated (0 errors); binary `.pbix` build pending owner action (above).
 - [x] Data source, retrieval method and licensing documented in `docs/DATA_CARD.md`.
 - [x] Architectural decisions recorded in `docs/DECISIONS.md` (D-001…D-014).
 - [x] Continuous integration workflow added (`.github/workflows/ci.yml`).

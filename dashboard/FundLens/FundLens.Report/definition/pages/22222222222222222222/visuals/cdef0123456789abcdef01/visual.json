@@ -1,0 +1,70 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "cdef0123456789abcdef01",
+  "position": {
+    "x": 20,
+    "y": 20,
+    "z": 1000,
+    "height": 300,
+    "width": 900,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": { "SourceRef": { "Entity": "FundMonth" }, "Property": "MeDate" }
+                }
+              },
+              "queryRef": "FundMonth.MeDate",
+              "nativeQueryRef": "MeDate",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": { "SourceRef": { "Entity": "FundMonth" }, "Property": "Nav" }
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(FundMonth.Nav)",
+              "nativeQueryRef": "Sum of Nav"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Aggregation": {
+                "Expression": {
+                  "Column": {
+                    "Expression": { "SourceRef": { "Entity": "FundMonth" }, "Property": "Nav" }
+                  }
+                },
+                "Function": 0
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}
