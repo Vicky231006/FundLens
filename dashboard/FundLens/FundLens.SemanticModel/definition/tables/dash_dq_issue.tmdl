@@ -1,0 +1,28 @@
+table dash_dq_issue
+	lineageTag: 04b99073-99c1-4b6c-86f3-7d17c4dde523
+
+	column issue_id
+		dataType: int64
+		lineageTag: baba755b-1dd7-40cc-98ec-f773d6b75d87
+		summarizeBy: sum
+		sourceColumn: issue_id
+
+	column severity
+		dataType: string
+		lineageTag: 267acda3-4c0b-4ee1-a7f4-f9802edb3ae6
+		sourceColumn: severity
+
+	column resolution_status
+		dataType: string
+		lineageTag: 0bc2c227-d6d4-4208-9f33-4738fd059f9a
+		sourceColumn: resolution_status
+
+	partition dash_dq_issue = m
+		mode: import
+		source =
+				let
+					Source = Sql.Database("localhost", "fundlens"),
+					dash_dq_issue = Source{[Schema="marts", Item="dash_dq_issue"]}[Data]
+				in
+					dash_dq_issue
+

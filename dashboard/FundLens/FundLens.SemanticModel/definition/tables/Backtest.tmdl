@@ -1,0 +1,21 @@
+table Backtest
+	lineageTag: 97781d5d-c2a5-4d58-b785-e8a36937b5a4
+
+	measure 'Mean Y' = AVERAGE(dash_backtest_summary[mean_y])
+		formatString: 0.00
+		lineageTag: e7835e9f-10be-4b6f-8207-67b47170892c
+
+	column Method
+		dataType: string
+		lineageTag: 6567cb9b-7bbc-4893-b4c7-0c30533b538c
+		sourceColumn: Method
+
+	partition Backtest = m
+		mode: import
+		source =
+				let
+					Source = Sql.Database("localhost", "fundlens"),
+					Backtest = Source{[Schema="marts", Item="dash_backtest_summary"]}[Data]
+				in
+					Backtest
+

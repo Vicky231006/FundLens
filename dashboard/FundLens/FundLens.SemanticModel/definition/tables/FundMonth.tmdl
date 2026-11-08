@@ -1,0 +1,29 @@
+table FundMonth
+	lineageTag: d064fa51-6f6f-4a27-88a5-33c148913fb2
+
+	column FundId
+		dataType: int64
+		isHidden
+		lineageTag: 7863a596-6bc3-4e80-97fe-3d0bcb0f3903
+		summarizeBy: none
+		sourceColumn: FundId
+
+	column MeDate
+		dataType: dateTime
+		lineageTag: 00f3ca02-5a4a-44bb-8ac7-523b4a721017
+		sourceColumn: MeDate
+
+	column Nav
+		dataType: decimal
+		lineageTag: b609c4cc-6eed-445f-9772-9aa2ac125b2f
+		sourceColumn: Nav
+
+	partition FundMonth = m
+		mode: import
+		source =
+				let
+					Source = Sql.Database("localhost", "fundlens"),
+					FundMonth = Source{[Schema="marts", Item="dash_fund_month"]}[Data]
+				in
+					FundMonth
+

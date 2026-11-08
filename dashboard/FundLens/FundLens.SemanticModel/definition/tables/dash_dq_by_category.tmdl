@@ -1,0 +1,39 @@
+table dash_dq_by_category
+	lineageTag: 7c438880-6fbd-44b9-8726-9c85faef1f8d
+
+	column issue_category
+		dataType: string
+		lineageTag: 78a2d839-910d-46d7-9c3b-1f61ef225884
+		sourceColumn: issue_category
+
+	column severity
+		dataType: string
+		lineageTag: f5e0a6d4-aae9-419a-8fc6-282cc119917a
+		sourceColumn: severity
+
+	column resolution_status
+		dataType: string
+		lineageTag: 84227677-06fd-401f-9c5b-3d0cc533a899
+		sourceColumn: resolution_status
+
+	column n_issues
+		dataType: int64
+		lineageTag: b2139636-a47c-47e5-a5cb-7c664ecec24b
+		summarizeBy: sum
+		sourceColumn: n_issues
+
+	column n_schemes
+		dataType: int64
+		lineageTag: f53e7732-95d6-4a74-8944-86f7a7e971ec
+		summarizeBy: sum
+		sourceColumn: n_schemes
+
+	partition dash_dq_by_category = m
+		mode: import
+		source =
+				let
+					Source = Sql.Database("localhost", "fundlens"),
+					dash_dq_by_category = Source{[Schema="marts", Item="dash_dq_by_category"]}[Data]
+				in
+					dash_dq_by_category
+

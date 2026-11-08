@@ -1,0 +1,27 @@
+table DataQuality
+	lineageTag: 124a16d9-6012-4bca-bee2-5608e9bcd98f
+
+	measure 'Open Critical Issues' = CALCULATE(COUNTROWS(dash_dq_issue), dash_dq_issue[severity] = "CRITICAL")
+		formatString: #,##0
+		lineageTag: 7d3d8c1b-eac3-474c-857c-a830987eb22a
+
+	column IssueId
+		dataType: int64
+		lineageTag: 85593652-cc39-424e-982d-404daab68733
+		summarizeBy: sum
+		sourceColumn: IssueId
+
+	column IssueCategory
+		dataType: string
+		lineageTag: 7c153bf5-f2aa-453d-8a56-7a1e1f9d8d35
+		sourceColumn: IssueCategory
+
+	partition DataQuality = m
+		mode: import
+		source =
+				let
+					Source = Sql.Database("localhost", "fundlens"),
+					DataQuality = Source{[Schema="marts", Item="dash_dq_issue"]}[Data]
+				in
+					DataQuality
+

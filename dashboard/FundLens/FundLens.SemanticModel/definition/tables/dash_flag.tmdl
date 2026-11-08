@@ -1,0 +1,36 @@
+table dash_flag
+	lineageTag: aca557b1-0588-4cf9-85ab-71684f49dff5
+
+	column scheme_id
+		dataType: int64
+		isHidden
+		lineageTag: ea6168f9-e781-41c7-9133-51fb04931093
+		summarizeBy: none
+		sourceColumn: scheme_id
+
+	column me_date
+		dataType: dateTime
+		isHidden
+		lineageTag: ce0c8cff-62fa-4d16-be38-5b4cd076410c
+		summarizeBy: none
+		sourceColumn: me_date
+
+	column cagr_3y
+		dataType: decimal
+		lineageTag: 95885f7e-acfa-4003-9a9b-6198051f15d0
+		sourceColumn: cagr_3y
+
+	column streak_months
+		dataType: int64
+		lineageTag: 534774aa-07f1-465f-a1a1-692e7459c1bc
+		sourceColumn: streak_months
+
+	partition dash_flag = m
+		mode: import
+		source =
+				let
+					Source = Sql.Database("localhost", "fundlens"),
+					dash_flag = Source{[Schema="marts", Item="dash_flag"]}[Data]
+				in
+					dash_flag
+

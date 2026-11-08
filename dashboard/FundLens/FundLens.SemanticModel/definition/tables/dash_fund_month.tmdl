@@ -1,0 +1,29 @@
+table dash_fund_month
+	lineageTag: 245b105d-3c85-4488-812e-29c95dbba69f
+
+	column scheme_id
+		dataType: int64
+		isHidden
+		lineageTag: 6f46cf59-5dc7-4d5f-bbe5-2cd5e9fb2f86
+		summarizeBy: none
+		sourceColumn: scheme_id
+
+	column me_date
+		dataType: dateTime
+		lineageTag: bf071f83-04e2-4c58-89a3-d09d3eb82938
+		sourceColumn: me_date
+
+	column nav
+		dataType: decimal
+		lineageTag: 8ba8218b-a033-46f3-97fa-fd0ba257d4ae
+		sourceColumn: nav
+
+	partition dash_fund_month = m
+		mode: import
+		source =
+				let
+					Source = Sql.Database("localhost", "fundlens"),
+					dash_fund_month = Source{[Schema="marts", Item="dash_fund_month"]}[Data]
+				in
+					dash_fund_month
+

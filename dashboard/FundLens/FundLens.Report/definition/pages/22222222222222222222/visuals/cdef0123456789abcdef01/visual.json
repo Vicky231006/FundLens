@@ -18,7 +18,12 @@
             {
               "field": {
                 "Column": {
-                  "Expression": { "SourceRef": { "Entity": "FundMonth" }, "Property": "MeDate" }
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FundMonth"
+                    }
+                  },
+                  "Property": "MeDate"
                 }
               },
               "queryRef": "FundMonth.MeDate",
@@ -34,7 +39,12 @@
                 "Aggregation": {
                   "Expression": {
                     "Column": {
-                      "Expression": { "SourceRef": { "Entity": "FundMonth" }, "Property": "Nav" }
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FundMonth"
+                        }
+                      },
+                      "Property": "Nav"
                     }
                   },
                   "Function": 0
@@ -53,7 +63,12 @@
               "Aggregation": {
                 "Expression": {
                   "Column": {
-                    "Expression": { "SourceRef": { "Entity": "FundMonth" }, "Property": "Nav" }
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "FundMonth"
+                      }
+                    },
+                    "Property": "Nav"
                   }
                 },
                 "Function": 0

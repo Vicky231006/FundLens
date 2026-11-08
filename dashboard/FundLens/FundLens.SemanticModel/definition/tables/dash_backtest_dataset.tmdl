@@ -1,0 +1,29 @@
+table dash_backtest_dataset
+	lineageTag: f180bd95-0707-4d61-816c-2500e00e1c83
+
+	column run_id
+		dataType: int64
+		isHidden
+		lineageTag: f82aa4d1-83c7-42fa-8094-b5703cdd14a4
+		summarizeBy: none
+		sourceColumn: run_id
+
+	column plan_type
+		dataType: string
+		lineageTag: a41aadcd-56d2-44ba-bf9d-177cc7da4d20
+		sourceColumn: plan_type
+
+	column test_start
+		dataType: dateTime
+		lineageTag: 1584b521-4d35-41a0-bba1-d89633470331
+		sourceColumn: test_start
+
+	partition dash_backtest_dataset = m
+		mode: import
+		source =
+				let
+					Source = Sql.Database("localhost", "fundlens"),
+					dash_backtest_dataset = Source{[Schema="marts", Item="dash_backtest_dataset"]}[Data]
+				in
+					dash_backtest_dataset
+

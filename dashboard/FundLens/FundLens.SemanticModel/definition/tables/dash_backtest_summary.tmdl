@@ -1,0 +1,60 @@
+table dash_backtest_summary
+	lineageTag: 97e1f97c-2e82-4d8b-8b30-75ffe62dbdc0
+
+	column run_id
+		dataType: int64
+		isHidden
+		lineageTag: 3b3aa63e-28b0-4095-ab51-159bda168a97
+		summarizeBy: none
+		sourceColumn: run_id
+
+	column plan_type
+		dataType: string
+		lineageTag: 8c0493af-2f21-4b4e-868e-7401af59519c
+		sourceColumn: plan_type
+
+	column param_set
+		dataType: string
+		lineageTag: 7d93e1f9-d18a-4cd1-bded-22c485600503
+		sourceColumn: param_set
+
+	column period
+		dataType: string
+		lineageTag: 2f351957-73a6-4984-941b-3d1cadd7208f
+		sourceColumn: period
+
+	column method
+		dataType: string
+		lineageTag: 9b192921-c2b7-4b96-92d0-cbb03b34809c
+		sourceColumn: method
+
+	column mean_y
+		dataType: decimal
+		lineageTag: c9e2b0fc-0b9e-474c-babb-6b05626fb389
+		sourceColumn: mean_y
+
+	column ci_lower_fund_cluster
+		dataType: decimal
+		lineageTag: 477f809e-46af-4fe9-a5e3-c7bf7494cb56
+		sourceColumn: ci_lower_fund_cluster
+
+	column ci_upper_fund_cluster
+		dataType: decimal
+		lineageTag: 4f50b1ae-8513-4817-9c42-636bd9432025
+		sourceColumn: ci_upper_fund_cluster
+
+	column n_obs
+		dataType: int64
+		lineageTag: 4cc73f5d-7dad-4e2c-a5a2-4efa7e81b1f1
+		summarizeBy: sum
+		sourceColumn: n_obs
+
+	partition dash_backtest_summary = m
+		mode: import
+		source =
+				let
+					Source = Sql.Database("localhost", "fundlens"),
+					dash_backtest_summary = Source{[Schema="marts", Item="dash_backtest_summary"]}[Data]
+				in
+					dash_backtest_summary
+

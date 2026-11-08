@@ -18,7 +18,12 @@
             {
               "field": {
                 "Column": {
-                  "Expression": { "SourceRef": { "Entity": "DataQuality" }, "Property": "IssueCategory" }
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DataQuality"
+                    }
+                  },
+                  "Property": "IssueCategory"
                 }
               },
               "queryRef": "DataQuality.IssueCategory",
@@ -34,7 +39,12 @@
                 "Aggregation": {
                   "Expression": {
                     "Column": {
-                      "Expression": { "SourceRef": { "Entity": "DataQuality" }, "Property": "IssueId" }
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DataQuality"
+                        }
+                      },
+                      "Property": "IssueId"
                     }
                   },
                   "Function": 0
@@ -53,7 +63,12 @@
               "Aggregation": {
                 "Expression": {
                   "Column": {
-                    "Expression": { "SourceRef": { "Entity": "DataQuality" }, "Property": "IssueId" }
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "DataQuality"
+                      }
+                    },
+                    "Property": "IssueId"
                   }
                 },
                 "Function": 0

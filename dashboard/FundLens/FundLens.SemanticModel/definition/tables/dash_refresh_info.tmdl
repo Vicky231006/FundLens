@@ -1,0 +1,45 @@
+table dash_refresh_info
+	lineageTag: ef0607bc-1b20-4b26-9d70-6d1e562dbbb5
+
+	column last_successful_refresh
+		dataType: dateTime
+		isHidden
+		lineageTag: 30e67f89-7047-4e47-b1f6-dab4e21949f2
+		summarizeBy: none
+		sourceColumn: last_successful_refresh
+
+	column latest_nav_date
+		dataType: dateTime
+		isHidden
+		lineageTag: 49864767-3149-4b44-afc7-a9a4f0fafc35
+		summarizeBy: none
+		sourceColumn: latest_nav_date
+
+	column nav_rows
+		dataType: int64
+		isHidden
+		lineageTag: d64a039f-8b11-465e-9b6a-df0ad2c79dab
+		summarizeBy: sum
+		sourceColumn: nav_rows
+
+	column schemes
+		dataType: int64
+		isHidden
+		lineageTag: 6a3e911d-edc3-4367-b161-1cfa47d32005
+		summarizeBy: sum
+		sourceColumn: schemes
+
+	column disclosure
+		dataType: string
+		lineageTag: cb661d05-c516-495e-9377-ff7f7f126f4d
+		sourceColumn: disclosure
+
+	partition dash_refresh_info = m
+		mode: import
+		source =
+				let
+					Source = Sql.Database("localhost", "fundlens"),
+					dash_refresh_info = Source{[Schema="marts", Item="dash_refresh_info"]}[Data]
+				in
+					dash_refresh_info
+

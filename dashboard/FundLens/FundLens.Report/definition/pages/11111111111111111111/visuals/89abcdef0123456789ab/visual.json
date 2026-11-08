@@ -18,7 +18,12 @@
             {
               "field": {
                 "Column": {
-                  "Expression": { "SourceRef": { "Entity": "Fund" }, "Property": "Category" }
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fund"
+                    }
+                  },
+                  "Property": "Category"
                 }
               },
               "queryRef": "Fund.Category",
@@ -34,7 +39,12 @@
                 "Aggregation": {
                   "Expression": {
                     "Column": {
-                      "Expression": { "SourceRef": { "Entity": "Fund" }, "Property": "FlagCount" }
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Fund"
+                        }
+                      },
+                      "Property": "FlagCount"
                     }
                   },
                   "Function": 0
@@ -53,7 +63,12 @@
               "Aggregation": {
                 "Expression": {
                   "Column": {
-                    "Expression": { "SourceRef": { "Entity": "Fund" }, "Property": "FlagCount" }
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "Fund"
+                      }
+                    },
+                    "Property": "FlagCount"
                   }
                 },
                 "Function": 0

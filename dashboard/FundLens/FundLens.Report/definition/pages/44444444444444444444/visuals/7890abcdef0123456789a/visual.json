@@ -18,7 +18,12 @@
             {
               "field": {
                 "Column": {
-                  "Expression": { "SourceRef": { "Entity": "Backtest" }, "Property": "Method" }
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Backtest"
+                    }
+                  },
+                  "Property": "Method"
                 }
               },
               "queryRef": "Backtest.Method",
@@ -32,7 +37,11 @@
             {
               "field": {
                 "Measure": {
-                  "Expression": { "SourceRef": { "Entity": "Backtest" } },
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Backtest"
+                    }
+                  },
                   "Property": "MeanY"
                 }
               },
@@ -47,7 +56,11 @@
           {
             "field": {
               "Measure": {
-                "Expression": { "SourceRef": { "Entity": "Backtest" } },
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Backtest"
+                  }
+                },
                 "Property": "MeanY"
               }
             },

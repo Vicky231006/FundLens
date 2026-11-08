@@ -1,0 +1,34 @@
+table Fund
+	lineageTag: fb0a8ee1-1376-4b3f-bd34-333de2da932e
+
+	measure 'Flagged Funds' = DISTINCTCOUNT(dash_flag[scheme_id])
+		formatString: #,##0
+		lineageTag: b4a46c52-f5da-4a0e-a9e6-08029ad57831
+
+	column FundId
+		dataType: int64
+		isHidden
+		lineageTag: 109a438a-e841-46dd-9548-a3e67a27315d
+		summarizeBy: none
+		sourceColumn: FundId
+
+	column Category
+		dataType: string
+		lineageTag: 6be35e63-24bf-4a8c-a166-b4f765912936
+		sourceColumn: Category
+
+	column FlagCount
+		dataType: int64
+		lineageTag: bb8ae5e1-e46c-4179-ace1-efb3cce29cb9
+		summarizeBy: sum
+		sourceColumn: FlagCount
+
+	partition Fund = m
+		mode: import
+		source =
+				let
+					Source = Sql.Database("localhost", "fundlens"),
+					Fund = Source{[Schema="marts", Item="dash_fund_month"]}[Data]
+				in
+					Fund
+
