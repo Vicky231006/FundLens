@@ -71,5 +71,37 @@
       }
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "39e9ea29dd01acec8d76",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Backtest"
+              }
+            },
+            "Property": "Method"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "59aa527f60a1c9951109",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Backtest"
+              }
+            },
+            "Property": "MeanY"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
   }
 }

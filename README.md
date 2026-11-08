@@ -69,24 +69,74 @@ See `RESULTS.md` for the actual measured results and `docs/` for the methodology
 
 ---
 
-## Power BI dashboard
+## Backtesting Results and Limitations
 
-FundLens includes an interactive Power BI report designed around four research and operational workflows.
+> **Measured, preserved outputs (pipeline run 2026-11-07; audited 2026-11-08).** This evaluation **does not validate** the intended "flag likely underperformers" hypothesis. *y* = fund's forward 12-month return ? category median forward 12-month return; **lower *y* among flagged funds = flags identified later underperformers**. See `RESULTS.md` and `results/backtest_*.json` (unchanged).
 
-| Page | What it shows |
-|---|---|
-| **Fund Review** | Flagged schemes, review reasons, category filters, month-end filters and financial metrics. |
-| **Fund Drilldown** | Individual scheme performance, NAV history, rolling returns, volatility, drawdown and historical flags. |
-| **Data Quality** | Data-quality issues grouped by category, severity and resolution status. |
-| **Backtesting** | Out-of-sample results, baseline comparisons, confidence intervals and evaluation limitations. |
+| Plan (out-of-sample) | Screen mean *y* | Fund-cluster 95% CI | Permutation p\* | Interpretation |
+|---|---:|---:|---:|---|
+| **DIRECT, default (primary)** | **+0.20%** (1,015 obs, 89 funds, 2022-07-29?2025-10-31) | [-0.99%, 1.60%] | 0.932 | **Inconclusive** (CI includes 0) |
+| **DIRECT, tuned** | **+0.13%** (616 obs, 60 funds) | [-1.41%, 1.96%] | 0.835 | **Inconclusive** |
+| **REGULAR, default** (sensitivity, longer history) | **+1.38%** (1,991 obs, 130 funds, 2019-10-31?2025-10-31) | [0.45%, 2.45%] | 1.000 | **Evidence in the opposite direction** (flagged outperformed; CI > 0) |
+| **REGULAR, tuned** | **+0.53%** (1,859 obs, 122 funds) | [-0.29%, 1.43%] | 0.962 | **Inconclusive** |
 
-The report connects to PostgreSQL analytical views under the `marts` schema.
+\* **Permutation p-value (one-sided lower-tail on *y*):** `p = P(random-flag mean y <= observed)` (+ smoothing). **Small p** ? flagged did worse than random. **Large p (0.93, 1.00)** ? **not** worse than random (often better); **not** predictive validation. Regular/default shows the opposite of the screen's intent, not merely "no effect."
 
-A plan-type slicer keeps Direct and Regular comparisons separate. The default view is Direct.
+**Limitations (key):** survivorship bias (closed/merged funds largely missing; bias magnitude unknown), current AMFI category labels applied historically, overlapping 12-month windows / dependent observations (fund-cluster & month-block bootstraps help but don't remove dependence), short Direct out-of-sample window, 30-candidate training-only grid (some selection optimism), not investment advice / no clients/AUM / not production or GIPS-compliant. Full disclosure: `RESULTS.md`.
 
-Every page displays the last successful refresh and the disclosure:
+**Testing/evidence (reproducible):** 13 automated DQ rules (unresolved **CRITICAL** blocks analytics; 55 ERROR/1,331 WARNING open, 252 CRITICAL resolved in audited snapshot), **104 tests passed** in a fresh run (2026-11-08; unit, property-based/Hypothesis, integration), measured performance in `docs/PERFORMANCE.md`. Interview/resume framing: `docs/INTERVIEW_GUIDE.md`, `docs/RESUME_RECOMMENDATIONS.md`.
 
-*Research-review flags – not investment recommendations.*
+---
+
+## Power BI Dashboard
+
+FundLens includes an interactive, four-page Power BI dashboard
+connected to PostgreSQL analytical marts. It provides an overview
+of flagged mutual funds, scheme-level performance, data quality,
+and the out-of-sample evaluation of the screening methodology.
+
+### 1. Fund Review
+
+Provides an overview of flagged mutual funds and their distribution
+across mutual fund categories. Users can explore flagged schemes
+and identify categories with a higher concentration of review flags.
+
+![Fund Review Dashboard](images/fund-review.png)
+
+### 2. Fund Drilldown
+
+Allows users to select an individual mutual fund scheme and plan
+type (Direct or Regular) to inspect its historical NAV movement.
+The page supports scheme-level analysis without aggregating NAV
+values across unrelated funds.
+
+![Fund Drilldown Dashboard](images/fund-drilldown.png)
+
+### 3. Backtesting
+
+Evaluates the FundLens screening methodology using out-of-sample
+data and compares its results against baseline approaches.
+
+The evaluation includes performance comparisons, observation
+counts, and statistical uncertainty. Results are interpreted
+with the limitations of the dataset and methodology in mind.
+
+The screening rule is not presented as a proven investment strategy.
+
+![Backtesting Dashboard](images/backtesting.png)
+
+### 4. Data Quality
+
+Provides visibility into data-quality issues identified during
+the ingestion and validation process. Issues are grouped by
+category to help monitor the reliability of the underlying
+mutual fund NAV data.
+
+![Data Quality Dashboard](images/data-quality.png)
+
+> **Disclaimer:** FundLens generates research-review flags for
+> analytical purposes only. These flags are not investment
+> recommendations or instructions to buy, hold, or sell mutual funds.
 
 ### Opening the dashboard
 
@@ -100,7 +150,7 @@ The report connects to your local PostgreSQL database. Configure the connection 
 
 The `.pbip` project contains the report and semantic-model definitions used for development and version control.
 
-A `.pbix` file can be saved locally from Power BI Desktop using **File → Save As**. Because an imported PBIX may contain a snapshot of the underlying financial data, the local PBIX is intentionally kept outside the public source repository.
+A `.pbix` file can be saved locally from Power BI Desktop using **File ΓåÆ Save As**. Because an imported PBIX may contain a snapshot of the underlying financial data, the local PBIX is intentionally kept outside the public source repository.
 
 See `dashboard/README.md` for dashboard-specific instructions.
 
@@ -226,7 +276,7 @@ This applies the versioned SQL migrations and creates the required database obje
 
 This retrieves the configured AMFI data, preserves source files and loads the observations into PostgreSQL.
 
-The initial download can take approximately 1–2 hours and may require around 2.5 GB of local storage, depending on the configured historical scope.
+The initial download can take approximately 1ΓÇô2 hours and may require around 2.5 GB of local storage, depending on the configured historical scope.
 
 ### 6. Run the analytics pipeline
 
@@ -305,43 +355,43 @@ The repository is organised into separate components for ingestion, database eng
 
 ```text
 FundLens/
-│
-├── config/
-│   └── Application settings and screening configuration
-│
-├── src/
-│   └── fundlens/
-│       ├── ingestion/       AMFI data retrieval and loading
-│       ├── validation/      Data-quality checks
-│       ├── metrics/         Financial calculations
-│       ├── screening/       Review-flag generation
-│       └── backtesting/     Historical evaluation
-│
-├── sql/
-│   ├── migrations/          Database schema changes
-│   ├── marts/               Analytical functions and views
-│   └── adhoc/               Analyst SQL queries
-│
-├── tests/
-│   ├── unit/
-│   ├── property/
-│   └── integration/
-│
-├── dashboard/
-│   └── FundLens/            Power BI project
-│
-├── docs/
-│   ├── BRD.md
-│   ├── USER_STORIES.md
-│   ├── ARCHITECTURE.md
-│   ├── DECISIONS.md
-│   └── DATA_CARD.md
-│
-├── RESULTS.md
-├── DEVELOPMENT_LOG.md
-├── TODO.md
-├── docker-compose.yml
-└── README.md
+Γöé
+Γö£ΓöÇΓöÇ config/
+Γöé   ΓööΓöÇΓöÇ Application settings and screening configuration
+Γöé
+Γö£ΓöÇΓöÇ src/
+Γöé   ΓööΓöÇΓöÇ fundlens/
+Γöé       Γö£ΓöÇΓöÇ ingestion/       AMFI data retrieval and loading
+Γöé       Γö£ΓöÇΓöÇ validation/      Data-quality checks
+Γöé       Γö£ΓöÇΓöÇ metrics/         Financial calculations
+Γöé       Γö£ΓöÇΓöÇ screening/       Review-flag generation
+Γöé       ΓööΓöÇΓöÇ backtesting/     Historical evaluation
+Γöé
+Γö£ΓöÇΓöÇ sql/
+Γöé   Γö£ΓöÇΓöÇ migrations/          Database schema changes
+Γöé   Γö£ΓöÇΓöÇ marts/               Analytical functions and views
+Γöé   ΓööΓöÇΓöÇ adhoc/               Analyst SQL queries
+Γöé
+Γö£ΓöÇΓöÇ tests/
+Γöé   Γö£ΓöÇΓöÇ unit/
+Γöé   Γö£ΓöÇΓöÇ property/
+Γöé   ΓööΓöÇΓöÇ integration/
+Γöé
+Γö£ΓöÇΓöÇ dashboard/
+Γöé   ΓööΓöÇΓöÇ FundLens/            Power BI project
+Γöé
+Γö£ΓöÇΓöÇ docs/
+Γöé   Γö£ΓöÇΓöÇ BRD.md
+Γöé   Γö£ΓöÇΓöÇ USER_STORIES.md
+Γöé   Γö£ΓöÇΓöÇ ARCHITECTURE.md
+Γöé   Γö£ΓöÇΓöÇ DECISIONS.md
+Γöé   ΓööΓöÇΓöÇ DATA_CARD.md
+Γöé
+Γö£ΓöÇΓöÇ RESULTS.md
+Γö£ΓöÇΓöÇ DEVELOPMENT_LOG.md
+Γö£ΓöÇΓöÇ TODO.md
+Γö£ΓöÇΓöÇ docker-compose.yml
+ΓööΓöÇΓöÇ README.md
 ```
 
 ## Reproducibility and limitations
@@ -380,4 +430,4 @@ For a deeper understanding of the project:
 
 ---
 
-**FundLens — Making mutual fund research more systematic, explainable and reproducible.**
+**FundLens ΓÇö Making mutual fund research more systematic, explainable and reproducible.**

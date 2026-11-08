@@ -27,6 +27,7 @@ data/processed/*
 Thumbs.db
 .DS_Store
 *.log
+docs\INTERVIEW_GUIDE.md
 
 # Agent/spec artifacts (local)
 PROMPT.md
@@ -37,3 +38,5 @@ dashboard/**/.pbi/localSettings.json
 dashboard/**/.pbi/cache.abf
 dashboard/**/.pbi/unappliedChanges.json
 dashboard/FundLens/FundLens.Report/.pbi/
+dashboard/FundLens/FundLens.pbix
+dashboard/FundLens/.pbi/

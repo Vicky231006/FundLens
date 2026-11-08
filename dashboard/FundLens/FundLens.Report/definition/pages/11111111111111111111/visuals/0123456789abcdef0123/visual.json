@@ -18,7 +18,11 @@
             {
               "field": {
                 "Measure": {
-                  "Expression": { "SourceRef": { "Entity": "Fund" } },
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fund"
+                    }
+                  },
                   "Property": "FlaggedFunds"
                 }
               },
@@ -33,7 +37,11 @@
           {
             "field": {
               "Measure": {
-                "Expression": { "SourceRef": { "Entity": "Fund" } },
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Fund"
+                  }
+                },
                 "Property": "FlaggedFunds"
               }
             },
