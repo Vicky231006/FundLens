@@ -32,7 +32,7 @@ table FundMonth
 		mode: import
 		source =
 				let
-					Source = PostgreSQL.Database("localhost", "fundlens", [Port=5433]),
+					Source = PostgreSQL.Database("localhost:5433", "fundlens"),
 					View = Source{[Schema="marts", Item="dash_fund_month"]}[Data],
 					Filtered = Table.SelectRows(View, each [plan_type] = "DIRECT"),
 					Selected = Table.SelectColumns(Filtered, {"scheme_id", "plan_type", "me_date", "nav"}),

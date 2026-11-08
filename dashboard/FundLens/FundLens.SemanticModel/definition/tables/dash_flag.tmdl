@@ -29,7 +29,7 @@ table dash_flag
 		mode: import
 		source =
 				let
-					Source = PostgreSQL.Database("localhost", "fundlens", [Port=5433]),
+					Source = PostgreSQL.Database("localhost:5433", "fundlens"),
 					dash_flag = Source{[Schema="marts", Item="dash_flag"]}[Data]
 				in
 					dash_flag

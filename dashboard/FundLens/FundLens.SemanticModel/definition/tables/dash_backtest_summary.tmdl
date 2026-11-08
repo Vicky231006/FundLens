@@ -53,7 +53,7 @@ table dash_backtest_summary
 		mode: import
 		source =
 				let
-					Source = PostgreSQL.Database("localhost", "fundlens", [Port=5433]),
+					Source = PostgreSQL.Database("localhost:5433", "fundlens"),
 					dash_backtest_summary = Source{[Schema="marts", Item="dash_backtest_summary"]}[Data]
 				in
 					dash_backtest_summary

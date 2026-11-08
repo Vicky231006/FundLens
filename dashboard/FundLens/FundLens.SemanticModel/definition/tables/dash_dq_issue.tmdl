@@ -21,7 +21,7 @@ table dash_dq_issue
 		mode: import
 		source =
 				let
-					Source = PostgreSQL.Database("localhost", "fundlens", [Port=5433]),
+					Source = PostgreSQL.Database("localhost:5433", "fundlens"),
 					dash_dq_issue = Source{[Schema="marts", Item="dash_dq_issue"]}[Data]
 				in
 					dash_dq_issue

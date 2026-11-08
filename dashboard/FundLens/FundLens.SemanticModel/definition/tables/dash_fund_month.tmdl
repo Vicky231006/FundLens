@@ -22,7 +22,7 @@ table dash_fund_month
 		mode: import
 		source =
 				let
-					Source = PostgreSQL.Database("localhost", "fundlens", [Port=5433]),
+					Source = PostgreSQL.Database("localhost:5433", "fundlens"),
 					dash_fund_month = Source{[Schema="marts", Item="dash_fund_month"]}[Data]
 				in
 					dash_fund_month

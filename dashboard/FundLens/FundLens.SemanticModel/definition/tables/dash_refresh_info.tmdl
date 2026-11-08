@@ -38,7 +38,7 @@ table dash_refresh_info
 		mode: import
 		source =
 				let
-					Source = PostgreSQL.Database("localhost", "fundlens", [Port=5433]),
+					Source = PostgreSQL.Database("localhost:5433", "fundlens"),
 					dash_refresh_info = Source{[Schema="marts", Item="dash_refresh_info"]}[Data]
 				in
 					dash_refresh_info
