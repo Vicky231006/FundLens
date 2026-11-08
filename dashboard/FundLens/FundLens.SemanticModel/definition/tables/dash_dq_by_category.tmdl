@@ -32,7 +32,7 @@ table dash_dq_by_category
 		mode: import
 		source =
 				let
-					Source = Sql.Database("localhost:5433", "fundlens"),
+					Source = PostgreSQL.Database("localhost", "fundlens", [Port=5433]),
 					dash_dq_by_category = Source{[Schema="marts", Item="dash_dq_by_category"]}[Data]
 				in
 					dash_dq_by_category

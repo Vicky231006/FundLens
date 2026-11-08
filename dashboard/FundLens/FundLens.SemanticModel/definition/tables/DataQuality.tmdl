@@ -35,7 +35,7 @@ table DataQuality
 		mode: import
 		source =
 				let
-					Source = Sql.Database("localhost:5433", "fundlens"),
+					Source = PostgreSQL.Database("localhost", "fundlens", [Port=5433]),
 					View = Source{[Schema="marts", Item="dash_dq_issue"]}[Data],
 					Selected = Table.SelectColumns(View, {"issue_id", "issue_category", "severity", "resolution_status"}),
 					Renamed = Table.RenameColumns(Selected, {{"issue_id", "IssueId"}, {"issue_category", "IssueCategory"}})

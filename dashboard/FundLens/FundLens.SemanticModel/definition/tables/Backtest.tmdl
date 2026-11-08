@@ -36,7 +36,7 @@ table Backtest
 		mode: import
 		source =
 				let
-					Source = Sql.Database("localhost:5433", "fundlens"),
+					Source = PostgreSQL.Database("localhost", "fundlens", [Port=5433]),
 					View = Source{[Schema="marts", Item="dash_backtest_summary"]}[Data],
 					Filtered = Table.SelectRows(View, each [plan_type] = "DIRECT" and [param_set] = "default" and [period] = "test"),
 					Selected = Table.SelectColumns(Filtered, {"plan_type", "param_set", "period", "method", "mean_y"}),
