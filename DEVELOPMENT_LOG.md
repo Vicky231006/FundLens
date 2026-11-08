@@ -3,6 +3,27 @@
 Format per `PROMPT.md` §16: work completed, files created or modified, tests executed, results, known
 issues, next steps.
 
+## 2026-11-08 — Jira handoff audit (Sprint 1 scope FNDL-11–14) + dashboard/reporting polish
+
+### Work completed
+- Received Jira handoff context (FNDL, epics FNDL-1–10, stories FNDL-11–37, Sprint 1 future: FNDL-11–14). Produced an implementation audit comparing repo state to FNDL-11–14 (evidence-based; AC not re-read from Jira API — confirm in Jira). Did **not** create duplicate Jira items, start/close sprint, or mark tickets Done.
+- Fixed Power BI PBIP/semantic model issues so the dashboard loads and refreshes against local PostgreSQL `marts.dash_*` (visual JSON schema/`Column.Property` fixes; semantic model bindings/measures/M; connector corrected to `PostgreSQL.Database("localhost:5433","fundlens")`, removed unsupported `Port` option; removed stale `.pbi/unappliedChanges.json`). Dashboard renders; reference checks consistent (DIRECT latest-month flags = 28; FundLens mean_y ~0.0020 on default/test slice).
+- Rewrote `README.md` for plain-language clarity; added ignores for `PROMPT.md`/`prompt.md` and Power BI local/cache artifacts; removed `PROMPT.md` from git tracking (kept local). Added `docs/PROJECT_MANAGEMENT.md` with Jira mapping (as provided). Configured git remote `origin` → `https://github.com/Vicky231006/FundLens.git`.
+
+### Files created / modified
+- Created: `docs/PROJECT_MANAGEMENT.md`.
+- Modified: `README.md`, `.gitignore`, `DEVELOPMENT_LOG.md`; `dashboard/FundLens/FundLens.SemanticModel/definition/tables/*.tmdl`, `dashboard/FundLens/FundLens.Report/definition/pages/**/visual.json` (and related report files) across commits `bf90351`, `a1396de`, `c5ad1fe`, `edbc46d`, `060bc6f`, `400f122`, `0d27b82`, `6d078a7`.
+- Deleted from index (kept local): `PROMPT.md`.
+
+### Tests executed
+- `npx --yes @microsoft/powerbi-report-authoring-cli@latest validate --pretty dashboard/FundLens/FundLens.pbip` → **succeededWithWarnings, 0 errors** (benign `PBIR_SCHEMA_UNREACHABLE`). No Python/DB test suite re-run in this session.
+
+### Known issues / follow-ups
+- **FR-A7 manual:** `.pbix` saved in Desktop is a local/untracked artifact (`dashboard/FundLens/FundLens.pbix` observed locally) — commit if desired. Power BI Desktop left **unstaged** modifications in `dashboard/FundLens/FundLens.Report/*` and `FundLens.pbip`; review `git diff -- dashboard/FundLens` before committing.
+- Confirm Sprint 1 acceptance criteria and statuses in Jira; run `make reproduce`/CI as needed for full DoD evidence.
+
+---
+
 ## 2026-11-07 — Session snapshot (agent-assisted build of FundLens)
 
 ### Work completed
