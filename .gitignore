@@ -27,3 +27,13 @@ data/processed/*
 Thumbs.db
 .DS_Store
 *.log
+
+# Agent/spec artifacts (local)
+PROMPT.md
+prompt.md
+
+# Power BI local/cache (user/machine-specific)
+dashboard/**/.pbi/localSettings.json
+dashboard/**/.pbi/cache.abf
+dashboard/**/.pbi/unappliedChanges.json
+dashboard/FundLens/FundLens.Report/.pbi/
