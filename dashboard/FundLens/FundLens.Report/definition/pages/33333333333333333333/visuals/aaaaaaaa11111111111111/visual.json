@@ -1,0 +1,85 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "aaaaaaaa11111111111111",
+  "position": {
+    "x": 20,
+    "y": 130,
+    "z": 2000,
+    "height": 320,
+    "width": 1240,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dash_dq_by_category"
+                    }
+                  },
+                  "Property": "issue_category"
+                }
+              },
+              "queryRef": "dash_dq_by_category.issue_category",
+              "nativeQueryRef": "Issue Category",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "dash_dq_by_category"
+                        }
+                      },
+                      "Property": "n_issues"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(dash_dq_by_category.n_issues)",
+              "nativeQueryRef": "Issues"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Aggregation": {
+                "Expression": {
+                  "Column": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "dash_dq_by_category"
+                      }
+                    },
+                    "Property": "n_issues"
+                  }
+                },
+                "Function": 0
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

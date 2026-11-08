@@ -1,0 +1,80 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "dddddddd44444444444444",
+  "position": {
+    "x": 20,
+    "y": 340,
+    "z": 2000,
+    "height": 300,
+    "width": 1240,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "areaChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dash_fund_month"
+                    }
+                  },
+                  "Property": "me_date"
+                }
+              },
+              "queryRef": "dash_fund_month.me_date",
+              "nativeQueryRef": "Month End",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "dash_fund_month"
+                        }
+                      },
+                      "Property": "nav"
+                    }
+                  },
+                  "Function": 1
+                }
+              },
+              "queryRef": "Avg(dash_fund_month.nav)",
+              "nativeQueryRef": "Avg NAV"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "dash_fund_month"
+                  }
+                },
+                "Property": "me_date"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

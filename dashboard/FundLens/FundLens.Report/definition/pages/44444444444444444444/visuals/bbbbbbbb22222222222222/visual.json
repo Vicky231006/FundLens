@@ -1,0 +1,85 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "bbbbbbbb22222222222222",
+  "position": {
+    "x": 20,
+    "y": 320,
+    "z": 2000,
+    "height": 300,
+    "width": 1240,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "barChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dash_backtest_summary"
+                    }
+                  },
+                  "Property": "method"
+                }
+              },
+              "queryRef": "dash_backtest_summary.method",
+              "nativeQueryRef": "Method",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "dash_backtest_summary"
+                        }
+                      },
+                      "Property": "n_obs"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(dash_backtest_summary.n_obs)",
+              "nativeQueryRef": "Observations"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Aggregation": {
+                "Expression": {
+                  "Column": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "dash_backtest_summary"
+                      }
+                    },
+                    "Property": "n_obs"
+                  }
+                },
+                "Function": 0
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}
