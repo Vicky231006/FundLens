@@ -1,29 +1,36 @@
 table FundMonth
-	lineageTag: d064fa51-6f6f-4a27-88a5-33c148913fb2
-
-	column FundId
-		dataType: int64
-		isHidden
-		lineageTag: 7863a596-6bc3-4e80-97fe-3d0bcb0f3903
-		summarizeBy: none
-		sourceColumn: FundId
 
 	column MeDate
 		dataType: dateTime
-		lineageTag: 00f3ca02-5a4a-44bb-8ac7-523b4a721017
+		formatString: Short Date
+		summarizeBy: none
 		sourceColumn: MeDate
 
 	column Nav
-		dataType: decimal
-		lineageTag: b609c4cc-6eed-445f-9772-9aa2ac125b2f
+		dataType: double
+		summarizeBy: sum
 		sourceColumn: Nav
+
+	column scheme_id
+		dataType: int64
+		isHidden
+		summarizeBy: none
+		sourceColumn: scheme_id
+
+	column plan_type
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: plan_type
 
 	partition FundMonth = m
 		mode: import
 		source =
 				let
 					Source = Sql.Database("localhost", "fundlens"),
-					FundMonth = Source{[Schema="marts", Item="dash_fund_month"]}[Data]
+					View = Source{[Schema="marts", Item="dash_fund_month"]}[Data],
+					Filtered = Table.SelectRows(View, each [plan_type] = "DIRECT"),
+					Selected = Table.SelectColumns(Filtered, {"scheme_id", "plan_type", "me_date", "nav"}),
+					Renamed = Table.RenameColumns(Selected, {{"me_date", "MeDate"}, {"nav", "Nav"}})
 				in
-					FundMonth
-
+					Renamed
