@@ -1,34 +1,41 @@
 table Backtest
+	lineageTag: 7496c460-758e-49af-8f48-ca2900dd3850
 
 	measure MeanY = AVERAGE(Backtest[mean_y])
 		formatString: 0.00%
+		lineageTag: b228e187-5065-4114-accb-e462857df935
 
 	column Method
 		dataType: string
+		lineageTag: 322921bb-fe66-45a6-88dd-d670cf056492
 		summarizeBy: none
 		sourceColumn: Method
 
 	column mean_y
 		dataType: double
 		isHidden
+		lineageTag: bfd0c3b2-2073-42b5-8d11-8e53f690db30
 		summarizeBy: none
 		sourceColumn: mean_y
 
 	column plan_type
 		dataType: string
 		isHidden
+		lineageTag: 536664bb-eb11-4d66-9c38-ad1d930a7309
 		summarizeBy: none
 		sourceColumn: plan_type
 
 	column param_set
 		dataType: string
 		isHidden
+		lineageTag: 34c79247-ffda-4e88-96c1-069feaabb3ea
 		summarizeBy: none
 		sourceColumn: param_set
 
 	column period
 		dataType: string
 		isHidden
+		lineageTag: 9ddd1b70-43da-4791-a7b6-f88cc9b4dddc
 		summarizeBy: none
 		sourceColumn: period
 

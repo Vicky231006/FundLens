@@ -1,15 +1,19 @@
 table Fund
+	lineageTag: d1fd9f03-8894-428e-aef5-b65a3baad4b5
 
 	measure FlaggedFunds = SUM(Fund[FlagCount])
 		formatString: #,##0
+		lineageTag: 69c9ba47-52ff-4341-99a2-939aae5d8478
 
 	column Category
 		dataType: string
+		lineageTag: 0ae58c2c-440e-4ac0-b1f3-9982ddf8fb2a
 		summarizeBy: none
 		sourceColumn: Category
 
 	column FlagCount
 		dataType: int64
+		lineageTag: c8385d95-6160-411d-bef4-dc591a78267f
 		summarizeBy: sum
 		sourceColumn: FlagCount
 

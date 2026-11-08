@@ -1,25 +1,30 @@
 table FundMonth
+	lineageTag: 3efa380d-66a4-40f5-afc0-e10126754cdf
 
 	column MeDate
 		dataType: dateTime
 		formatString: Short Date
+		lineageTag: ea25f41f-884c-4aef-8510-058a5285a41a
 		summarizeBy: none
 		sourceColumn: MeDate
 
 	column Nav
 		dataType: double
+		lineageTag: ed20b369-315e-4ace-98ba-eb2526b4d27e
 		summarizeBy: sum
 		sourceColumn: Nav
 
 	column scheme_id
 		dataType: int64
 		isHidden
+		lineageTag: 6629df9f-952f-474a-af46-254ea85c209c
 		summarizeBy: none
 		sourceColumn: scheme_id
 
 	column plan_type
 		dataType: string
 		isHidden
+		lineageTag: ed991211-f50d-47ae-b0fc-7aa5e44e0b19
 		summarizeBy: none
 		sourceColumn: plan_type
 

@@ -1,33 +1,38 @@
 table DataQuality
+	lineageTag: 466f46ba-d744-4ff4-bff1-6981410698d0
 
-	measure OpenCriticalIssues = ```
+	measure OpenCriticalIssues =
 			CALCULATE(
 				COUNTROWS(DataQuality),
 				DataQuality[severity] = "CRITICAL",
 				DataQuality[resolution_status] IN { "OPEN", "ACKNOWLEDGED" }
 			)
-			```
 		formatString: #,##0
+		lineageTag: c339d8c3-39cc-44ac-b331-5a518a558a1b
 
 	column IssueId
 		dataType: int64
+		lineageTag: 74d1a5ce-f062-4981-bb2a-6a6a8a7bb7e2
 		summarizeBy: sum
 		sourceColumn: IssueId
 
 	column IssueCategory
 		dataType: string
+		lineageTag: e0643db5-7334-40f6-862d-bc1d5755a616
 		summarizeBy: none
 		sourceColumn: IssueCategory
 
 	column severity
 		dataType: string
 		isHidden
+		lineageTag: ae2729f4-80a8-4314-891a-ea31375fa69d
 		summarizeBy: none
 		sourceColumn: severity
 
 	column resolution_status
 		dataType: string
 		isHidden
+		lineageTag: bd5e3c05-9bcb-4665-be21-71d6dc1b05c7
 		summarizeBy: none
 		sourceColumn: resolution_status
 
